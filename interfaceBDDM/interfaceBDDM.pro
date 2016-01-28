@@ -44,5 +44,9 @@ HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui
 
+macx:LIBS       += -lvlc
+
+unix!macx:LIBS  += -lvlc
+
 message(Qt version: $$[QT_VERSION])
 message(Qt is installed in $$[QT_INSTALL_PREFIX])
