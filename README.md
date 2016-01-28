@@ -1,4 +1,6 @@
 # bddm_s2
+
+[![Join the chat at https://gitter.im/NicolasLutz/bddm_s2](https://badges.gitter.im/NicolasLutz/bddm_s2.svg)](https://gitter.im/NicolasLutz/bddm_s2?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 M1 ISI project : Base de données multimédia
 
 # H264
