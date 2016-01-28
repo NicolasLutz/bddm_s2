@@ -1,0 +1,90 @@
+﻿-- logger module started --
+mp4 warning: unknown box type btrt (incompletely loaded)
+mp4 warning: unknown box type gsst (incompletely loaded)
+mp4 warning: unknown box type gstd (incompletely loaded)
+mp4 warning: elst box found
+mp4 warning: STTS table of 1 entries
+mp4 warning: STTS table of 1 entries
+stream_out_transcode: input interval 41708 (base 1001)
+stream_out_transcode: output interval 41708 (base 1001)
+faad warning: decoded zero sample
+﻿-- logger module started --
+mp4 warning: unknown box type btrt (incompletely loaded)
+mp4 warning: unknown box type gsst (incompletely loaded)
+mp4 warning: unknown box type gstd (incompletely loaded)
+mp4 warning: elst box found
+mp4 warning: STTS table of 1 entries
+mp4 warning: STTS table of 1 entries
+faad warning: decoded zero sample
+stream_out_transcode: input interval 41708 (base 1001)
+stream_out_transcode: output interval 41708 (base 1001)
+﻿-- logger module started --
+mp4 warning: unknown box type btrt (incompletely loaded)
+mp4 warning: unknown box type gsst (incompletely loaded)
+mp4 warning: unknown box type gstd (incompletely loaded)
+mp4 warning: elst box found
+mp4 warning: STTS table of 1 entries
+mp4 warning: STTS table of 1 entries
+faad warning: decoded zero sample
+stream_out_transcode: input interval 41708 (base 1001)
+stream_out_transcode: output interval 41708 (base 1001)
+﻿-- logger module started --
+mp4 warning: unknown box type btrt (incompletely loaded)
+mp4 warning: unknown box type gsst (incompletely loaded)
+mp4 warning: unknown box type gstd (incompletely loaded)
+mp4 warning: elst box found
+mp4 warning: STTS table of 1 entries
+mp4 warning: STTS table of 1 entries
+faad warning: decoded zero sample
+stream_out_transcode: input interval 41708 (base 1001)
+stream_out_transcode: output interval 41708 (base 1001)
+﻿-- logger module started --
+mp4 warning: unknown box type btrt (incompletely loaded)
+mp4 warning: unknown box type gsst (incompletely loaded)
+mp4 warning: unknown box type gstd (incompletely loaded)
+mp4 warning: elst box found
+mp4 warning: STTS table of 1 entries
+mp4 warning: STTS table of 1 entries
+faad warning: decoded zero sample
+stream_out_transcode: input interval 41708 (base 1001)
+stream_out_transcode: output interval 41708 (base 1001)
+﻿-- logger module started --
+mp4 warning: unknown box type btrt (incompletely loaded)
+mp4 warning: unknown box type gsst (incompletely loaded)
+mp4 warning: unknown box type gstd (incompletely loaded)
+mp4 warning: elst box found
+mp4 warning: STTS table of 1 entries
+mp4 warning: STTS table of 1 entries
+faad warning: decoded zero sample
+stream_out_transcode: input interval 41708 (base 1001)
+stream_out_transcode: output interval 41708 (base 1001)
+﻿-- logger module started --
+mp4 warning: unknown box type btrt (incompletely loaded)
+mp4 warning: unknown box type gsst (incompletely loaded)
+mp4 warning: unknown box type gstd (incompletely loaded)
+mp4 warning: elst box found
+mp4 warning: STTS table of 1 entries
+mp4 warning: STTS table of 1 entries
+stream_out_transcode: input interval 41708 (base 1001)
+stream_out_transcode: output interval 41708 (base 1001)
+faad warning: decoded zero sample
+﻿-- logger module started --
+mp4 warning: unknown box type btrt (incompletely loaded)
+mp4 warning: unknown box type gsst (incompletely loaded)
+mp4 warning: unknown box type gstd (incompletely loaded)
+mp4 warning: elst box found
+mp4 warning: STTS table of 1 entries
+mp4 warning: STTS table of 1 entries
+faad warning: decoded zero sample
+stream_out_transcode: input interval 41708 (base 1001)
+stream_out_transcode: output interval 41708 (base 1001)
+﻿-- logger module started --
+mp4 warning: unknown box type btrt (incompletely loaded)
+mp4 warning: unknown box type gsst (incompletely loaded)
+mp4 warning: unknown box type gstd (incompletely loaded)
+mp4 warning: elst box found
+mp4 warning: STTS table of 1 entries
+mp4 warning: STTS table of 1 entries
+faad warning: decoded zero sample
+stream_out_transcode: input interval 41708 (base 1001)
+stream_out_transcode: output interval 41708 (base 1001)
