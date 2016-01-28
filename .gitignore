@@ -1,0 +1,17 @@
+# The usual junk
+bin/
+*.o
+interfaceBDDM
+
+# Qt stuff
+*.user*
+*.cbp
+moc_*.cpp
+ui_*.h
+
+# CMake stuff
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+Makefile
+*automoc.cpp
