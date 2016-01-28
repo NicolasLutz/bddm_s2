@@ -1,5 +1,6 @@
 # The usual junk
 bin/
+lib/
 *.o
 interfaceBDDM
 
