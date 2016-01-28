@@ -16,3 +16,9 @@ https://www.sqlite.org/about.html
 Installation:
 
 http://www.tutorialspoint.com/sqlite/sqlite_installation.htm
+
+# VLC
+
+You will also need the vlc library that can be found here:
+
+https://wiki.videolan.org/LibVLC/
