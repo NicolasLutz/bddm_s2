@@ -2,10 +2,24 @@
 #define FRAMEVALUE_H
 
 
-class FrameValue
-{
+
+#include "Common.h"
+
+class FrameValue{
 public:
-	FrameValue();
+	FrameValue(const QColor & colorRGB);
+
+
+	int getRed() const;
+	int getBlue() const;
+	int getGreen() const;
+	int getHue() const;
+	int getSaturation() const;
+	int getBrightness() const;
+
+private:
+	QColor averageColorRGB;
+	QColor averageColorHSV;
 };
 
 #endif // FRAMEVALUE_H

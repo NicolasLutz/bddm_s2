@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+#include "Analyser.h"
+#include "VLCPlayer.h"
+
 namespace Ui {
 class MainWindow;
 }

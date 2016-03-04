@@ -52,7 +52,7 @@ void VLCPlayer::init(VLCHandler * handler){
 
 	// VLC options
 	sprintf(smem_options
-	  , "#transcode{vcodec=I444,acodec=s16l}:smem{"
+	  , "#transcode{vcodec=RV24,acodec=s16l}:smem{"
 		 "video-prerender-callback=%lld,"
 		 "video-postrender-callback=%lld,"
 		 "audio-prerender-callback=%lld,"
@@ -121,9 +121,7 @@ bool VLCPlayer::loadFile(const QString & filePath){
 	VLCPlayer::playbackInProgress = true;
 	VLCPlayer::mutex.unlock();
 
-	while (VLCPlayer::playbackInProgress){
-		QTest::qSleep(1000);
-	}
+	while(VLCPlayer::playbackInProgress);
 	mediaFile.close();
 
 	return true;
@@ -133,12 +131,16 @@ void VLCPlayer::setHandler(VLCHandler * handler){
 	VLCPlayer::handler = handler;
 }
 
+void VLCPlayer::stop(){
+	libvlc_media_player_stop(VLCPlayer::media_player);
+}
+
 
 
 
 // Audio prerender callback
 void VLCPlayer::cbAudioPrerender (void * p_audio_data, uint8_t ** pp_pcm_buffer , unsigned int size){
-	// TODO: Lock the mutex
+	mutex.lock();
 	//printf("cbAudioPrerender %i\n",size);
 	//printf("atest: %lld\n",(long long int)p_audio_data);
 	if (size > VLCPlayer::audioBufferSize || !VLCPlayer::audioBuffer){
@@ -148,9 +150,6 @@ void VLCPlayer::cbAudioPrerender (void * p_audio_data, uint8_t ** pp_pcm_buffer 
 		VLCPlayer::audioBufferSize = size;
 	}
 	*pp_pcm_buffer = VLCPlayer::audioBuffer;
-
-	if (VLCPlayer::handler)
-		VLCPlayer::handler -> cbAudioPrerender(p_audio_data, pp_pcm_buffer, size);
 }
 
 // Audio postrender callback
@@ -158,11 +157,14 @@ void VLCPlayer::cbAudioPostrender(void * p_audio_data, uint8_t* p_pcm_buffer, un
 	//printf("cbAudioPostrender %i\n", size);
 	// TODO: explain how data should be handled
 	// TODO: Unlock the mutex
+	mutex.unlock();
 	if (VLCPlayer::handler)
 		VLCPlayer::handler -> cbAudioPostrender(p_audio_data, p_pcm_buffer, channels, rate, nb_samples, bits_per_sample, size, pts);
 }
 
 void VLCPlayer::cbVideoPrerender(void * p_video_data, uint8_t **pp_pixel_buffer, int size) {
+	mutex.lock();
+
 	// Locking
 	//printf("cbVideoPrerender %i\n",size);
 	//printf("vtest: %lld\n",(long long int)p_video_data);
@@ -173,26 +175,22 @@ void VLCPlayer::cbVideoPrerender(void * p_video_data, uint8_t **pp_pixel_buffer,
 		VLCPlayer::videoBufferSize = size;
 	}
 	*pp_pixel_buffer = VLCPlayer::videoBuffer;
-
-	if (VLCPlayer::handler)
-		VLCPlayer::handler -> cbVideoPrerender(p_video_data, pp_pixel_buffer, size);
 }
 
 void VLCPlayer::cbVideoPostrender(void * p_video_data, uint8_t *p_pixel_buffer, int width, int height, int pixel_pitch, int size, int64_t pts) {
 	//printf("cbVideoPostrender %i\n",size);
-	//Unlocking
 	//qDebug() << "We got a frame !";
+	mutex.unlock();
 
 	if (VLCPlayer::handler)
 		VLCPlayer::handler -> cbVideoPostrender(p_video_data, p_pixel_buffer, width, height, pixel_pitch, size, pts);
 }
 
-void VLCPlayer::handleEvent(const libvlc_event_t* pEvt, void * pUserData){
+void VLCPlayer::handleEvent(const libvlc_event_t * pEvt, void * pUserData){
 	libvlc_time_t time;
-	switch(pEvt->type){
+	switch(pEvt -> type){
 	case libvlc_MediaPlayerTimeChanged:
 		time = libvlc_media_player_get_time(VLCPlayer::media_player);
-		//qDebug() << "MediaPlayerTimeChanged " << time << " ms";
 		break;
 	case libvlc_MediaPlayerEndReached:
 		qDebug() << "MediaPlayerEndReached";

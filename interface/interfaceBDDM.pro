@@ -41,13 +41,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     src/Analyser.cpp \
     src/VLCPlayer.cpp \
-    src/VLCHandler.cpp
+    src/VLCHandler.cpp \
+    src/FrameValue.cpp
 
 HEADERS  += mainwindow.h \
     src/Analyser.h \
     src/Common.h \
     src/VLCPlayer.h \
-    src/VLCHandler.h
+    src/VLCHandler.h \
+    src/FrameValue.h
 
 FORMS    += mainwindow.ui
 

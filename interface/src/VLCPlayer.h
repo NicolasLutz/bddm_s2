@@ -11,9 +11,16 @@
 
 class VLCPlayer{
 public:
-
+	///
+	/// \brief init the player context, to be reader to play something.
+	/// \param handler a pointer to a VLCHandler object for function callback
+	///
 	static void init(VLCHandler * handler = NULL);
 
+
+	///
+	/// \brief release the player context and free the memory
+	///
 	static void release();
 
 	///
@@ -23,8 +30,14 @@ public:
 	///
 	static bool loadFile(const QString & filePath);
 
+	///
+	/// \brief change the callback object
+	/// \param handler
+	///
 	static void setHandler(VLCHandler * handler);
 
+
+	static void stop();
 
 private:
 	void static cbAudioPrerender(void * p_audio_data, uint8_t ** pp_pcm_buffer , unsigned int size);
