@@ -17,11 +17,7 @@ public:
 private:
 	QColor averageColor;
 	QVector<FrameValue*> framesValuesVector;
-
+    unsigned int *m_similaritySpectrum;
 };
-
-
-
-
 
 #endif // ANALYSER_H

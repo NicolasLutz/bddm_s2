@@ -1,8 +1,6 @@
 #ifndef FRAMEVALUE_H
 #define FRAMEVALUE_H
 
-
-
 #include "Common.h"
 
 class FrameValue{

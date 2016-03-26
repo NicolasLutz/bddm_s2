@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QFileDialog>
 
 #include "Analyser.h"
 #include "VLCPlayer.h"
@@ -18,8 +19,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void on_actionLoad_triggered();
+
+    void on_actionCompute_similarity_spectrum_triggered();
+    
 private:
     Ui::MainWindow *ui;
+    QString m_videoFilename;
 };
 
 #endif // MAINWINDOW_H
