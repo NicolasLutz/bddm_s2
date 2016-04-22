@@ -1,13 +1,13 @@
 #include "analyser_hud_detection.h"
 
-Analyser_HUD_Detection::Analyser_HUD_Detection():
+Analyser_HUD_Detection::Analyser_HUD_Detection(QLabel *label):
     ASubAnalyser(),
     m_hudMaskGreyscale(0),
     m_previousFrame(0),
     m_hudMask(0),
-    m_frameCount(0)
+    m_frameCount(0),
+    m_label(label)
 {
-
 }
 
 void Analyser_HUD_Detection::updateVideoDetection(void * p_video_data, uint8_t * p_pixel_buffer, int width, int height, int pixel_pitch, int size, int64_t pts)
@@ -52,10 +52,21 @@ void Analyser_HUD_Detection::produceOutput()
         double dValue=(double)m_hudMask[p]/m_frameCount;
         hudMaskGreyScalePtr[p]=(quint8)(dValue*255);
     }
-    m_hudMaskGreyscale->save("smg64.png");
+    m_hudMaskGreyscale->save("test.png");
+
+    if(m_label!=NULL)
+        m_label->setPixmap(QPixmap::fromImage(*m_hudMaskGreyscale));
 
     m_frameCount=0;
     delete m_hudMask;
+    m_hudMask=0;
     delete m_hudMaskGreyscale;
+    m_hudMaskGreyscale=0;
     delete m_previousFrame;
+    m_previousFrame=0;
+}
+
+void Analyser_HUD_Detection::setLabel(QLabel* label)
+{
+    m_label=label;
 }

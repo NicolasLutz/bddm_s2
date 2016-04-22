@@ -197,3 +197,415 @@ faad warning: decoded zero sample
 avcodec: Using NVIDIA VDPAU Driver Shared Library  358.16  Mon Nov 16 18:57:31 PST 2015 for hardware decoding.
 stream_out_transcode: input interval 16666 (base 950)
 stream_out_transcode: output interval 16666 (base 950)
+ï»¿-- logger module started --
+avi warning: unknown chunk: çyžç (not loaded)
+stream_out_transcode: input interval 33333 (base 1)
+stream_out_transcode: output interval 33333 (base 1)
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avi warning: cannot get packet header, track disabled
+avi warning: unknown chunk: çyžç (not unloaded)
+ï»¿-- logger module started --
+avi warning: unknown chunk: çyžç (not loaded)
+stream_out_transcode: input interval 33333 (base 1)
+stream_out_transcode: output interval 33333 (base 1)
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avi warning: cannot get packet header, track disabled
+avi warning: unknown chunk: çyžç (not unloaded)
+ï»¿-- logger module started --
+avcodec: Using NVIDIA VDPAU Driver Shared Library  358.16  Mon Nov 16 18:57:31 PST 2015 for hardware decoding.
+faad warning: decoded zero sample
+stream_out_transcode: input interval 33333 (base 1)
+stream_out_transcode: output interval 33333 (base 1)
+avi warning: cannot get packet header, track disabled
+ï»¿-- logger module started --
+avi warning: unknown chunk: çyžç (not loaded)
+stream_out_transcode: input interval 33333 (base 1)
+stream_out_transcode: output interval 33333 (base 1)
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avi warning: cannot get packet header, track disabled
+avi warning: unknown chunk: çyžç (not unloaded)
+ï»¿-- logger module started --
+avi warning: unknown chunk: çyžç (not loaded)
+stream_out_transcode: input interval 33333 (base 1)
+stream_out_transcode: output interval 33333 (base 1)
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+core error: ES_OUT_SET_(GROUP_)PCR  is called too late (pts_delay increased to 300 ms)
+core error: ES_OUT_RESET_PCR called
+stream_out_transcode warning: Reseting video sync
+stream_out_transcode warning: Reseting video sync
+avi warning: cannot get packet header, track disabled
+avi warning: unknown chunk: çyžç (not unloaded)
+ï»¿-- logger module started --
+avi warning: unknown chunk: çyžç (not loaded)
+stream_out_transcode: input interval 33333 (base 1)
+stream_out_transcode: output interval 33333 (base 1)
+avcodec warning: plane 0 not aligned
+avcodec warning: disabling direct rendering
+avi warning: cannot get packet header, track disabled
+avi warning: unknown chunk: çyžç (not unloaded)
+ï»¿-- logger module started --
+faad warning: decoded zero sample
+avcodec: Using NVIDIA VDPAU Driver Shared Library  358.16  Mon Nov 16 18:57:31 PST 2015 for hardware decoding.
+stream_out_transcode: input interval 33333 (base 1)
+stream_out_transcode: output interval 33333 (base 1)
+avi warning: cannot get packet header, track disabled

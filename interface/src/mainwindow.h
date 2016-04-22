@@ -26,6 +26,8 @@ public:
 private slots:
     void on_actionLoad_triggered();
     
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString m_videoFilename;
