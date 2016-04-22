@@ -135,14 +135,10 @@ void VLCPlayer::stop(){
 	libvlc_media_player_stop(VLCPlayer::media_player);
 }
 
-
-
-
 // Audio prerender callback
 void VLCPlayer::cbAudioPrerender (void * p_audio_data, uint8_t ** pp_pcm_buffer , unsigned int size){
 	mutex.lock();
-	//printf("cbAudioPrerender %i\n",size);
-	//printf("atest: %lld\n",(long long int)p_audio_data);
+
 	if (size > VLCPlayer::audioBufferSize || !VLCPlayer::audioBuffer){
 		qDebug() << "Reallocate raw audio buffer";
 		if(VLCPlayer::audioBuffer) delete[] VLCPlayer::audioBuffer;
@@ -154,9 +150,7 @@ void VLCPlayer::cbAudioPrerender (void * p_audio_data, uint8_t ** pp_pcm_buffer 
 
 // Audio postrender callback
 void VLCPlayer::cbAudioPostrender(void * p_audio_data, uint8_t* p_pcm_buffer, unsigned int channels, unsigned int rate, unsigned int nb_samples, unsigned int bits_per_sample, unsigned int size, int64_t pts ){
-	//printf("cbAudioPostrender %i\n", size);
-	// TODO: explain how data should be handled
-	// TODO: Unlock the mutex
+
 	mutex.unlock();
 	if (VLCPlayer::handler)
 		VLCPlayer::handler -> cbAudioPostrender(p_audio_data, p_pcm_buffer, channels, rate, nb_samples, bits_per_sample, size, pts);
@@ -165,9 +159,6 @@ void VLCPlayer::cbAudioPostrender(void * p_audio_data, uint8_t* p_pcm_buffer, un
 void VLCPlayer::cbVideoPrerender(void * p_video_data, uint8_t **pp_pixel_buffer, int size) {
 	mutex.lock();
 
-	// Locking
-	//printf("cbVideoPrerender %i\n",size);
-	//printf("vtest: %lld\n",(long long int)p_video_data);
 	if (size > VLCPlayer::videoBufferSize || !VLCPlayer::videoBuffer){
 		qDebug() << "Reallocate raw video buffer\n";
 		if(VLCPlayer::audioBuffer) delete [] VLCPlayer::videoBuffer;
@@ -178,8 +169,7 @@ void VLCPlayer::cbVideoPrerender(void * p_video_data, uint8_t **pp_pixel_buffer,
 }
 
 void VLCPlayer::cbVideoPostrender(void * p_video_data, uint8_t *p_pixel_buffer, int width, int height, int pixel_pitch, int size, int64_t pts) {
-	//printf("cbVideoPostrender %i\n",size);
-	//qDebug() << "We got a frame !";
+
 	mutex.unlock();
 
 	if (VLCPlayer::handler)

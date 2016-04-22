@@ -4,8 +4,12 @@
 #include <QMainWindow>
 #include <QFileDialog>
 
+#include "Common.h"
 #include "Analyser.h"
 #include "VLCPlayer.h"
+
+#include "analyser_color_detection.h"
+#include "analyser_hud_detection.h"
 
 namespace Ui {
 class MainWindow;
@@ -21,12 +25,15 @@ public:
 
 private slots:
     void on_actionLoad_triggered();
-
-    void on_actionCompute_similarity_spectrum_triggered();
     
 private:
     Ui::MainWindow *ui;
     QString m_videoFilename;
+
+    Analyser m_analyser;
+
+    Analyser_Color_Detection m_acd;
+    Analyser_HUD_Detection m_ahd;
 };
 
 #endif // MAINWINDOW_H

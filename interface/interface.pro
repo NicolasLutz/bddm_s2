@@ -42,14 +42,20 @@ SOURCES += main.cpp\
     src/Analyser.cpp \
     src/VLCPlayer.cpp \
     src/VLCHandler.cpp \
-    src/FrameValue.cpp
+    src/FrameValue.cpp \
+    src/analyser_hud_detection.cpp \
+    src/abstractsubanalyser.cpp \
+    src/analyser_color_detection.cpp
 
 HEADERS  += mainwindow.h \
     src/Analyser.h \
     src/Common.h \
     src/VLCPlayer.h \
     src/VLCHandler.h \
-    src/FrameValue.h
+    src/FrameValue.h \
+    src/analyser_hud_detection.h \
+    src/abstractsubanalyser.h \
+    src/analyser_color_detection.h
 
 FORMS    += mainwindow.ui
 
