@@ -11,12 +11,13 @@
 class Analyser_HUD_Detection : public ASubAnalyser
 {
 public:
-    Analyser_HUD_Detection(QLabel* label=0);
+    Analyser_HUD_Detection();
+    ~Analyser_HUD_Detection();
 
     void updateVideoDetection(void * p_video_data, uint8_t * p_pixel_buffer, int width, int height, int pixel_pitch, int size, int64_t pts);
     void produceOutput();
 
-    void setLabel(QLabel* label);
+    QImage *getImg() const;
 
 private:
     QImage          *m_hudMaskGreyscale;
@@ -25,7 +26,6 @@ private:
 
     uint32_t        *m_hudMask;
     unsigned int    m_frameCount;
-    QLabel          *m_label;
 };
 
 #endif // ANALYSER_HUD_DETECTION_H

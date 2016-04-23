@@ -32,6 +32,9 @@ private slots:
     void on_pushButton_clicked();
 
 private:
+
+    float hudMaskDistanceCalculation(QImage *img1, QImage *img2) const;
+
     Ui::MainWindow *ui;
     QString m_videoFilename;
 
