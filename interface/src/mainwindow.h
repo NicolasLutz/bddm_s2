@@ -27,11 +27,15 @@ public:
 private slots:
     void on_actionLoad_triggered();
 
-    void on_actionNew_triggered();
+    //void on_actionNew_triggered();
 
     void on_pushButton_clicked();
 
-private:
+    void on_actionNew_triggered();
+
+    void on_actionOpen_database_triggered();
+
+    private:
 
     float hudMaskDistanceCalculation(QImage *img1, QImage *img2) const;
 

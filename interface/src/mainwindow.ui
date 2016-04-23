@@ -89,14 +89,16 @@
      <x>0</x>
      <y>0</y>
      <width>437</width>
-     <height>25</height>
+     <height>30</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>Fi&amp;le</string>
     </property>
     <addaction name="actionLoad"/>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen_database"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -110,7 +112,17 @@
   </widget>
   <action name="actionLoad">
    <property name="text">
-    <string>Load...</string>
+    <string>&amp;Load...</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>&amp;New database...</string>
+   </property>
+  </action>
+  <action name="actionOpen_database">
+   <property name="text">
+    <string>Open database...</string>
    </property>
   </action>
  </widget>

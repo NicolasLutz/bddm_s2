@@ -2,14 +2,14 @@
 
 #include <qfile.h>
 
-const std::string Database::c_sqlCreateDb = "CREATE TABLE games(\
-                                               id INTEGER PRIMARY KEY,\
-                                               name TEXT UNIQUE NOT NULL,\
-                                               year INT,\
-                                               editor TEXT,\
-                                               img BLOB,\
-                                               analysis_img BLOB NOT NULL,\
-                                               description TEXT);";
+const std::string Database::c_sqlCreateDb = "CREATE TABLE games("
+                                              "id INTEGER PRIMARY KEY,"
+                                              "name TEXT UNIQUE NOT NULL,"
+                                              "year INT,"
+                                              "editor TEXT,"
+                                              "img BLOB,"
+                                              "analysis_img BLOB NOT NULL,"
+                                              "description TEXT);";
 
 const std::string Database::c_sqlInsertGame = "INSERT INTO games(name, year, editor, description, img, analysis_img) VALUES(?,?,?,?,?,?);";
 const std::string Database::c_sqlGameNames = "SELECT name FROM games;";
@@ -25,6 +25,10 @@ Database::Database(const QString& filename) :
             sqlite3_close(m_db);
         throw std::runtime_error(errstr);
     }
+
+    // TODO : make sure the db is a sqlite db for this app, not some random sqlite db
+    // For this, compare the schema to the table creation SQL, it must match
+
     // Database open, prepare statements
     if(sqlite3_prepare_v2(m_db, c_sqlInsertGame.c_str(), c_sqlInsertGame.length()+1, &m_insertStmtHandle, nullptr) != SQLITE_OK) {
         std::string errstr(sqlite3_errmsg(m_db));
@@ -93,7 +97,7 @@ void Database::create(const QString& filename) {
         throw std::runtime_error("Database file already exists");
     }
     sqlite3* db = nullptr;
-    if(sqlite3_open_v2(filename.toStdString().c_str(), &db, SQLITE_OPEN_CREATE, nullptr) != SQLITE_OK) {
+    if(sqlite3_open_v2(filename.toStdString().c_str(), &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, nullptr) != SQLITE_OK) {
         std::string errstr(sqlite3_errmsg(db));
         if(db)
             sqlite3_close(db);

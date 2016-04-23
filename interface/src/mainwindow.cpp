@@ -42,21 +42,6 @@ void MainWindow::on_actionLoad_triggered()
     }
 }
 
-void MainWindow::on_actionNew_triggered()
-{
-    QString dbName = QFileDialog::getOpenFileName(this, tr("Create database"),
-                                            "",
-                                            "");
-    try {
-        Database::create(dbName);
-    }
-    catch(std::runtime_error& e) {
-        std::ostringstream oss;
-        oss << "Could not create database : " << e.what();
-        QMessageBox::critical(this, "Database error", QString::fromStdString(oss.str()));
-    }
-}
-
 void MainWindow::on_pushButton_clicked()
 {
     on_actionLoad_triggered();
@@ -76,5 +61,42 @@ float MainWindow::hudMaskDistanceCalculation(QImage *img1, QImage *img2) const
     for (quint64 p = 0; p < pixelCount; p++)
     {
 
+    }
+}
+
+void MainWindow::on_actionNew_triggered()
+{
+    QString dbName = QFileDialog::getSaveFileName(this, "Create database", ".");
+    if(dbName.isEmpty())
+        return;
+
+    try {
+        Database::create(dbName);
+    }
+    catch(std::runtime_error& e) {
+        std::ostringstream oss;
+        oss << "Could not create database : " << e.what();
+        QMessageBox::critical(this, "Database error", QString::fromStdString(oss.str()));
+    }
+}
+
+void MainWindow::on_actionOpen_database_triggered()
+{
+    QString dbName = QFileDialog::getOpenFileName(this, "Open database", ".");
+    if(dbName.isEmpty())
+        return;
+
+    if(m_db) {
+        delete m_db;
+        m_db = nullptr;
+    }
+
+    try {
+        m_db = new Database(dbName);
+    }
+    catch(std::runtime_error& e) {
+        std::ostringstream oss;
+        oss << "Could not open database : " << e.what();
+        QMessageBox::critical(this, "Database error", QString::fromStdString(oss.str()));
     }
 }
