@@ -11,8 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    m_ahd.setLabel(ui->label_2);
-
     VLCPlayer::init(&m_analyser);
     m_analyser.addAnalyser(&m_acd);
     m_analyser.addAnalyser(&m_ahd);
@@ -35,10 +33,29 @@ void MainWindow::on_actionLoad_triggered()
         VLCPlayer::release();
 
         m_analyser.produceOutputs();
+        ui->label_2->setPixmap(QPixmap::fromImage(*(m_ahd.getImg())));
+        m_ahd.getImg()->save("output.png");
     }
 }
 
 void MainWindow::on_pushButton_clicked()
 {
     on_actionLoad_triggered();
+}
+
+float MainWindow::hudMaskDistanceCalculation(QImage *img1, QImage *img2) const
+{
+    Q_ASSERT(img1!=NULL && img2!=NULL
+            && img1->format()==QImage::Format_Grayscale8
+            && img2->format()==QImage::Format_Grayscale8);
+
+    quint8 *img1Ptr = (quint8 *) img1->bits();
+    quint8 *img2Ptr = (quint8 *) img2->bits();
+
+    quint64 pixelCount = img1->width() * img1->height();
+
+    for (quint64 p = 0; p < pixelCount; p++)
+    {
+
+    }
 }

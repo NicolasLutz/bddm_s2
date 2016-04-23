@@ -609,3 +609,7 @@ avcodec: Using NVIDIA VDPAU Driver Shared Library  358.16  Mon Nov 16 18:57:31 P
 stream_out_transcode: input interval 33333 (base 1)
 stream_out_transcode: output interval 33333 (base 1)
 avi warning: cannot get packet header, track disabled
+﻿-- logger module started --
+﻿-- logger module started --
+﻿-- logger module started --
+﻿-- logger module started --

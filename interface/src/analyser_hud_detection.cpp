@@ -1,24 +1,34 @@
 #include "analyser_hud_detection.h"
 
-Analyser_HUD_Detection::Analyser_HUD_Detection(QLabel *label):
+Analyser_HUD_Detection::Analyser_HUD_Detection():
     ASubAnalyser(),
     m_hudMaskGreyscale(0),
     m_previousFrame(0),
     m_hudMask(0),
-    m_frameCount(0),
-    m_label(label)
+    m_frameCount(0)
 {
+}
+
+Analyser_HUD_Detection::~Analyser_HUD_Detection()
+{
+    delete m_hudMask;
+    delete m_hudMaskGreyscale;
+    delete m_previousFrame;
 }
 
 void Analyser_HUD_Detection::updateVideoDetection(void * p_video_data, uint8_t * p_pixel_buffer, int width, int height, int pixel_pitch, int size, int64_t pts)
 {
-    static const double maxN2=sqrt(255*255*3);
+    //static const double maxN2=sqrt(255*255*3);
     quint64 pixelCount = width * height;
     int cmpnents=(pixel_pitch/8);
     Q_ASSERT(cmpnents==3); //if this case happens; make the program more flexible!
 
     if(m_previousFrame==NULL)
     {
+        if(m_hudMaskGreyscale!=NULL)
+        {
+            delete m_hudMaskGreyscale;
+        }
         m_hudMask=new uint32_t[width*height];
         m_hudMaskGreyscale = new QImage(width, height, QImage::Format_Grayscale8);
         m_previousFrame = new uint8_t[width*height*cmpnents];
@@ -52,21 +62,15 @@ void Analyser_HUD_Detection::produceOutput()
         double dValue=(double)m_hudMask[p]/m_frameCount;
         hudMaskGreyScalePtr[p]=(quint8)(dValue*255);
     }
-    m_hudMaskGreyscale->save("test.png");
-
-    if(m_label!=NULL)
-        m_label->setPixmap(QPixmap::fromImage(*m_hudMaskGreyscale));
 
     m_frameCount=0;
     delete m_hudMask;
     m_hudMask=0;
-    delete m_hudMaskGreyscale;
-    m_hudMaskGreyscale=0;
     delete m_previousFrame;
     m_previousFrame=0;
 }
 
-void Analyser_HUD_Detection::setLabel(QLabel* label)
+QImage *Analyser_HUD_Detection::getImg() const
 {
-    m_label=label;
+    return m_hudMaskGreyscale;
 }
