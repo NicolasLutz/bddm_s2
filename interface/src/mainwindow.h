@@ -10,6 +10,7 @@
 
 #include "analyser_color_detection.h"
 #include "analyser_hud_detection.h"
+#include "database.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,7 +26,9 @@ public:
 
 private slots:
     void on_actionLoad_triggered();
-    
+
+    void on_actionNew_triggered();
+
     void on_pushButton_clicked();
 
 private:
@@ -36,6 +39,8 @@ private:
 
     Analyser_Color_Detection m_acd;
     Analyser_HUD_Detection m_ahd;
+
+    Database* m_db;
 };
 
 #endif // MAINWINDOW_H

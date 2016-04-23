@@ -45,7 +45,11 @@ SOURCES += main.cpp\
     src/FrameValue.cpp \
     src/analyser_hud_detection.cpp \
     src/abstractsubanalyser.cpp \
-    src/analyser_color_detection.cpp
+    src/analyser_color_detection.cpp \
+    src/database.cpp \
+    src/game.cpp \
+    src/game.inl \
+    src/database.inl
 
 HEADERS  += mainwindow.h \
     src/Analyser.h \
@@ -55,11 +59,13 @@ HEADERS  += mainwindow.h \
     src/FrameValue.h \
     src/analyser_hud_detection.h \
     src/abstractsubanalyser.h \
-    src/analyser_color_detection.h
+    src/analyser_color_detection.h \
+    src/database.h \
+    src/game.h
 
 FORMS    += mainwindow.ui
 
 message(Qt version: $$[QT_VERSION])
 message(Qt is installed in $$[QT_INSTALL_PREFIX])
 
-unix|win32: LIBS += -L"lib/" -lvlc
+unix|win32: LIBS += -L"lib/" -lvlc -lsqlite3

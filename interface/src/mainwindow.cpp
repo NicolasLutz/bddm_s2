@@ -1,13 +1,17 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <qmessagebox.h>
+#include <sstream>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_videoFilename(),
     m_analyser(),
     m_acd(),
-    m_ahd()
+    m_ahd(),
+    m_db(nullptr)
 {
     ui->setupUi(this);
 
@@ -35,6 +39,21 @@ void MainWindow::on_actionLoad_triggered()
         VLCPlayer::release();
 
         m_analyser.produceOutputs();
+    }
+}
+
+void MainWindow::on_actionNew_triggered()
+{
+    QString dbName = QFileDialog::getOpenFileName(this, tr("Create database"),
+                                            "",
+                                            "");
+    try {
+        Database::create(dbName);
+    }
+    catch(std::runtime_error& e) {
+        std::ostringstream oss;
+        oss << "Could not create database : " << e.what();
+        QMessageBox::critical(this, "Database error", QString::fromStdString(oss.str()));
     }
 }
 
