@@ -37,8 +37,11 @@ void MainWindow::on_actionLoad_triggered()
         VLCPlayer::release();
 
         m_analyser.produceOutputs();
-        ui->label_2->setPixmap(QPixmap::fromImage(*(m_ahd.getImg())));
-        m_ahd.getImg()->save("output.png");
+        if(m_ahd.getImg()!=NULL)
+        {
+            ui->label_2->setPixmap(QPixmap::fromImage(*(m_ahd.getImg())));
+            m_ahd.getImg()->save("output.png");
+        }
     }
 }
 

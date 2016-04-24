@@ -52,6 +52,8 @@ void Analyser_HUD_Detection::updateVideoDetection(void * p_video_data, uint8_t *
 
 void Analyser_HUD_Detection::produceOutput()
 {
+    if(m_hudMaskGreyscale==NULL || m_hudMask==NULL)
+        return;
     delete m_previousFrame;
     m_previousFrame=0;
 
