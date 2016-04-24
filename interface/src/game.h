@@ -12,7 +12,7 @@ class Game
              QString* editor, QString* description, QImage const& img, int* year);
 
         virtual ~Game();
-        Game operator=(Game const& other);
+        void operator=(Game const& other);
 
         // Getters
         QString const& name() const;

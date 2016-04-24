@@ -35,7 +35,7 @@ Game::~Game()
         delete m_editor;
 }
 
-Game Game::operator=(const Game& other) {
+void Game::operator=(const Game& other) {
     m_name        = other.m_name;
     m_analysisImg = other.m_analysisImg;
     m_gameImg     = other.m_gameImg;
