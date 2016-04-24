@@ -237,12 +237,12 @@ void Database::insert_game(const Game& g) {
     else
         checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 4), SQLITE_OK);
 
-    checkSqliteCall(sqlite3_bind_blob(m_insertStmtHandle, 5, g.analysis().constBits(), g.analysis().byteCount(), SQLITE_STATIC), SQLITE_OK);
+    checkSqliteCall(sqlite3_bind_blob(m_insertStmtHandle, 6, g.analysis().constBits(), g.analysis().byteCount(), SQLITE_STATIC), SQLITE_OK);
 
     if(!g.gameImg().isNull())
-        checkSqliteCall(sqlite3_bind_blob(m_insertStmtHandle, 6, g.gameImg().constBits(), g.gameImg().byteCount(), SQLITE_STATIC), SQLITE_OK);
+        checkSqliteCall(sqlite3_bind_blob(m_insertStmtHandle, 5, g.gameImg().constBits(), g.gameImg().byteCount(), SQLITE_STATIC), SQLITE_OK);
     else
-        checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 6), SQLITE_OK);
+        checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 5), SQLITE_OK);
 
     // Parameters bound, run the statement
     checkSqliteCall(sqlite3_step(m_insertStmtHandle), SQLITE_DONE);
