@@ -8,13 +8,18 @@ Analyser_Color_Detection::Analyser_Color_Detection():
 
 Analyser_Color_Detection::~Analyser_Color_Detection()
 {
+    /*
     for (size_t i = 0; i < this -> framesValuesVector.size(); i++){
         delete this -> framesValuesVector[i];
     }
+    */
 }
 
 void Analyser_Color_Detection::updateVideoDetection(void * p_video_data, uint8_t * p_pixel_buffer, int width, int height, int pixel_pitch, int size, int64_t pts)
 {
+    /*
+     *We used to check the colors!
+     *
     if(framesValuesVector.size()==0)
         qDebug() << "pixel pitch is " << pixel_pitch;
 
@@ -45,6 +50,7 @@ void Analyser_Color_Detection::updateVideoDetection(void * p_video_data, uint8_t
         QColor averageFrameColor = QColor::fromRgb(sumRed / pixelsCounted, sumGreen / pixelsCounted, sumBlue / pixelsCounted);
         this -> framesValuesVector.push_back(new FrameValue(averageFrameColor));
     }
+    */
 }
 
 void Analyser_Color_Detection::produceOutput()

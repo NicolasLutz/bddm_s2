@@ -38,7 +38,7 @@ private slots:
 
     private:
 
-    int hudMaskDistanceCalculation(QImage *img1, QImage *img2) const;
+    float hudMaskDistanceCalculation(QImage *img1, QImage *img2) const;
     float fromIntCoordinate(int value, int size) const {return value/size;}
     int toIntCoordinate(float value, int size) const {return value*size;}
     int toPtrLocation(int x, int y, int width) const {return y*width+x;}

@@ -47,7 +47,7 @@ void MainWindow::on_pushButton_clicked()
     on_actionLoad_triggered();
 }
 
-int MainWindow::hudMaskDistanceCalculation(QImage *img1, QImage *img2) const
+float MainWindow::hudMaskDistanceCalculation(QImage *img1, QImage *img2) const
 {
     Q_ASSERT(img1!=NULL && img2!=NULL
             && img1->format()==QImage::Format_Grayscale8
@@ -86,7 +86,7 @@ int MainWindow::hudMaskDistanceCalculation(QImage *img1, QImage *img2) const
             distance+=(img2Ptr[toPtrLocation(xImg2, yImg2, wI2)]-img1Ptr[toPtrLocation(x, y, wI1)]);
         }
     }
-    return distance;
+    return (float)distance/(wI1*hI1);
 }
 
 void MainWindow::on_actionNew_triggered()
