@@ -2,24 +2,31 @@
 
 #include <qfile.h>
 
-const std::string Database::c_sqlCreateDb = "CREATE TABLE games("
-                                              "id INTEGER PRIMARY KEY,"
-                                              "name TEXT UNIQUE NOT NULL,"
-                                              "year INT,"
-                                              "editor TEXT,"
-                                              "img BLOB,"
-                                              "analysis_img BLOB NOT NULL,"
-                                              "description TEXT);";
+const std::string Database::c_sqlCreateDb = "CREATE TABLE editors("
+                                                "id INTEGER PRIMARY KEY,"
+                                                "name TEXT UNIQUE NOT NULL);"
+                                            "CREATE TABLE games("
+                                                "id INTEGER PRIMARY KEY,"
+                                                "name TEXT UNIQUE NOT NULL,"
+                                                "year INT,"
+                                                "editor INT,"
+                                                "img BLOB,"
+                                                "analysis_img BLOB NOT NULL,"
+                                                "description TEXT,"
+                                                "FOREIGN KEY(editor) REFERENCES editors(id));";
 
-const std::string Database::c_sqlInsertGame = "INSERT INTO games(name, year, editor, description, img, analysis_img) VALUES(?,?,?,?,?,?);";
-const std::string Database::c_sqlGameNames = "SELECT name FROM games ORDER BY id ASC;";
-const std::string Database::c_sqlGameUpdate = "UPDATE games SET "
-                                              "year=?,"
-                                              "editor=?,"
-                                              "img=?,"
-                                              "analysis_img=?,"
-                                              "description=? "
-                                              "WHERE name=?";
+const std::string Database::c_sqlInsertEditor = "INSERT INTO editors(name) VALUES(?);";
+const std::string Database::c_sqlEditorId     = "SELECT id FROM editors WHERE name=?;";
+const std::string Database::c_sqlEditorName   = "SELECT name FROM editors WHERE id=?;";
+const std::string Database::c_sqlInsertGame   = "INSERT INTO games(name, year, editor, description, img, analysis_img) VALUES(?,?,?,?,?,?);";
+const std::string Database::c_sqlGameNames    = "SELECT name FROM games ORDER BY id ASC;";
+const std::string Database::c_sqlGameUpdate   = "UPDATE games SET "
+                                                    "year=?,"
+                                                    "editor=?,"
+                                                    "img=?,"
+                                                    "analysis_img=?,"
+                                                    "description=? "
+                                                "WHERE name=?";
 const std::string Database::c_sqlGame = "SELECT year, editor, description, img, analysis_img FROM games WHERE name=?;";
 
 Database::Database(const QString& filename) :
@@ -69,12 +76,49 @@ Database::Database(const QString& filename) :
         sqlite3_close(m_db);
         throw std::runtime_error(errstr);
     }
+
+    if(sqlite3_prepare_v2(m_db, c_sqlInsertEditor.c_str(), c_sqlInsertEditor.length()+1, &m_insertEditorHandle, nullptr) != SQLITE_OK) {
+        std::string errstr(sqlite3_errmsg(m_db));
+        sqlite3_finalize(m_insertStmtHandle);
+        sqlite3_finalize(m_gameNamesHandle);
+        sqlite3_finalize(m_gameHandle);
+        sqlite3_finalize(m_gameUpdateHandle);
+        sqlite3_close(m_db);
+        throw std::runtime_error(errstr);
+    }
+
+    if(sqlite3_prepare_v2(m_db, c_sqlEditorId.c_str(), c_sqlEditorId.length()+1, &m_editorIdHandle, nullptr) != SQLITE_OK) {
+        std::string errstr(sqlite3_errmsg(m_db));
+        sqlite3_finalize(m_insertStmtHandle);
+        sqlite3_finalize(m_gameNamesHandle);
+        sqlite3_finalize(m_gameHandle);
+        sqlite3_finalize(m_gameUpdateHandle);
+        sqlite3_finalize(m_insertEditorHandle);
+        sqlite3_close(m_db);
+        throw std::runtime_error(errstr);
+    }
+
+    if(sqlite3_prepare_v2(m_db, c_sqlEditorName.c_str(), c_sqlEditorName.length()+1, &m_editorNameHandle, nullptr) != SQLITE_OK) {
+        std::string errstr(sqlite3_errmsg(m_db));
+        sqlite3_finalize(m_insertStmtHandle);
+        sqlite3_finalize(m_gameNamesHandle);
+        sqlite3_finalize(m_gameHandle);
+        sqlite3_finalize(m_gameUpdateHandle);
+        sqlite3_finalize(m_insertEditorHandle);
+        sqlite3_finalize(m_editorIdHandle);
+        sqlite3_close(m_db);
+        throw std::runtime_error(errstr);
+    }
 }
 
 Database::~Database() {
     sqlite3_finalize(m_insertStmtHandle);
     sqlite3_finalize(m_gameNamesHandle);
     sqlite3_finalize(m_gameHandle);
+    sqlite3_finalize(m_gameUpdateHandle);
+    sqlite3_finalize(m_insertEditorHandle);
+    sqlite3_finalize(m_editorIdHandle);
+    sqlite3_finalize(m_editorNameHandle);
     sqlite3_close(m_db);
 }
 
@@ -169,8 +213,15 @@ void Database::insert_game(const Game& g) {
     else
         checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 2), SQLITE_OK);
 
-    if(g.editor())
-        checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 3, g.editor()->toStdString().c_str(), g.editor()->length(), SQLITE_STATIC), SQLITE_OK);
+    if(g.editor()) {
+        int* id = editor_id(*g.editor());
+        if(id) {
+            checkSqliteCall(sqlite3_bind_int(m_insertStmtHandle, 3, *id), SQLITE_OK);
+            delete id;
+        }
+        else
+            checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 3), SQLITE_OK);
+    }
     else
         checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 3), SQLITE_OK);
 
@@ -189,4 +240,26 @@ void Database::insert_game(const Game& g) {
     // Parameters bound, run the statement
     checkSqliteCall(sqlite3_step(m_insertStmtHandle), SQLITE_DONE);
     checkSqliteCall(sqlite3_reset(m_insertStmtHandle), SQLITE_OK);
+}
+
+int* Database::editor_id(QString const& editor) {
+    checkSqliteCall(sqlite3_bind_text(m_editorIdHandle, 1, editor.toStdString().c_str(), editor.length(), SQLITE_STATIC), SQLITE_OK);
+    int* r = (sqlite3_step(m_editorIdHandle) == SQLITE_ROW) ? new int(sqlite3_column_int(m_editorIdHandle, 1)) : nullptr;
+    sqlite3_reset(m_editorIdHandle);
+    return r;
+}
+
+QString Database::editor_name(const int id) {
+    checkSqliteCall(sqlite3_bind_int(m_editorNameHandle, 1, id), SQLITE_OK);
+    if(sqlite3_step(m_editorNameHandle) != SQLITE_ROW)
+        throw std::runtime_error("No editor with such id");
+    QString name(reinterpret_cast<const char*>(sqlite3_column_text(m_editorNameHandle, 1)));
+    sqlite3_reset(m_editorNameHandle);
+    return name;
+}
+
+void Database::insert_editor(const QString& editor) {
+    checkSqliteCall(sqlite3_bind_text(m_insertEditorHandle, 1, editor.toStdString().c_str(), editor.length(), SQLITE_STATIC), SQLITE_OK);
+    checkSqliteCall(sqlite3_step(m_insertEditorHandle), SQLITE_DONE);
+    sqlite3_reset(m_insertEditorHandle);
 }

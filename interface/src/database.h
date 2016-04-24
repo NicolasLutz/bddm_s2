@@ -36,12 +36,24 @@ class Database
         sqlite3_stmt* m_gameNamesHandle;
         sqlite3_stmt* m_gameUpdateHandle;
         sqlite3_stmt* m_gameHandle;
+        sqlite3_stmt* m_insertEditorHandle;
+        sqlite3_stmt* m_editorIdHandle;
+        sqlite3_stmt* m_editorNameHandle;
 
         static const std::string c_sqlCreateDb;
         static const std::string c_sqlInsertGame;
         static const std::string c_sqlGameNames;
         static const std::string c_sqlGameUpdate;
         static const std::string c_sqlGame;
+        static const std::string c_sqlInsertEditor;
+        static const std::string c_sqlEditorId;
+        static const std::string c_sqlEditorName;
+
+        // Private cause only used within the class
+        // Nico : move these to public if you need them
+        void insert_editor(QString const& editor);
+        int* editor_id(QString const& editor);
+        QString editor_name(const int id);
 
         template <class T>
         void checkSqliteCall(T const& value, T const& okValue);
