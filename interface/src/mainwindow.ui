@@ -224,6 +224,7 @@
      <string>Debug</string>
     </property>
     <addaction name="actionGod_mode"/>
+    <addaction name="actionLoad_fake_comparasion"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuDebug"/>
@@ -244,6 +245,11 @@
   <action name="actionGod_mode">
    <property name="text">
     <string>Load fake analysis</string>
+   </property>
+  </action>
+  <action name="actionLoad_fake_comparasion">
+   <property name="text">
+    <string>Load fake comparasion</string>
    </property>
   </action>
  </widget>

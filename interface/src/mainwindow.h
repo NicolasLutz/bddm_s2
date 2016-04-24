@@ -45,6 +45,8 @@ private slots:
 
     void on_actionGod_mode_triggered();
 
+    void on_actionLoad_fake_comparasion_triggered();
+
 private:
 
     float hudMaskDistanceCalculation(const QImage *img1, const QImage *img2) const;

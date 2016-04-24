@@ -54,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    VLCPlayer::release();
     delete ui;
 }
 
@@ -142,7 +143,6 @@ void MainWindow::on_pushButton_3_clicked() //Results
     if(!m_videoFilename.isEmpty())
     {
         VLCPlayer::loadFile(m_videoFilename);
-        VLCPlayer::release();
 
         m_analyser.produceOutputs();
         if(m_ahd.getImg()!=NULL)
@@ -225,4 +225,10 @@ void MainWindow::on_actionGod_mode_triggered()
     m_ahd.debug_setImgfromFile("output.png");
     ui->label_2->setPixmap(QPixmap::fromImage(*(m_ahd.getImg())));
     on_pushButton_5_clicked();
+}
+
+void MainWindow::on_actionLoad_fake_comparasion_triggered()
+{
+    m_ahd.debug_setImgfromFile("output.png");
+    findGame();
 }
