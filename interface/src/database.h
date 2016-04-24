@@ -34,11 +34,13 @@ class Database
 
         sqlite3_stmt* m_insertStmtHandle;
         sqlite3_stmt* m_gameNamesHandle;
+        sqlite3_stmt* m_gameUpdateHandle;
         sqlite3_stmt* m_gameHandle;
 
         static const std::string c_sqlCreateDb;
         static const std::string c_sqlInsertGame;
         static const std::string c_sqlGameNames;
+        static const std::string c_sqlGameUpdate;
         static const std::string c_sqlGame;
 
         template <class T>

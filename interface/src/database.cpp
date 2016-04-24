@@ -13,11 +13,21 @@ const std::string Database::c_sqlCreateDb = "CREATE TABLE games("
 
 const std::string Database::c_sqlInsertGame = "INSERT INTO games(name, year, editor, description, img, analysis_img) VALUES(?,?,?,?,?,?);";
 const std::string Database::c_sqlGameNames = "SELECT name FROM games;";
+const std::string Database::c_sqlGameUpdate = "UPDATE games SET "
+                                              "year=?,"
+                                              "editor=?,"
+                                              "img=?,"
+                                              "analysis_img=?,"
+                                              "description=? "
+                                              "WHERE name=?";
 const std::string Database::c_sqlGame = "SELECT year, editor, description, img, analysis_img FROM games WHERE name=?;";
 
 Database::Database(const QString& filename) :
     m_db(nullptr),
-    m_insertStmtHandle(nullptr)
+    m_insertStmtHandle(nullptr),
+    m_gameNamesHandle(nullptr),
+    m_gameUpdateHandle(nullptr),
+    m_gameHandle(nullptr)
 {
     if(sqlite3_open_v2(filename.toStdString().c_str(), &m_db, SQLITE_OPEN_READWRITE, nullptr) != SQLITE_OK) {
         std::string errstr(sqlite3_errmsg(m_db));
@@ -47,6 +57,15 @@ Database::Database(const QString& filename) :
         std::string errstr(sqlite3_errmsg(m_db));
         sqlite3_finalize(m_insertStmtHandle);
         sqlite3_finalize(m_gameNamesHandle);
+        sqlite3_close(m_db);
+        throw std::runtime_error(errstr);
+    }
+
+    if(sqlite3_prepare_v2(m_db, c_sqlGameUpdate.c_str(), c_sqlGameUpdate.length()+1, &m_gameUpdateHandle, nullptr) != SQLITE_OK) {
+        std::string errstr(sqlite3_errmsg(m_db));
+        sqlite3_finalize(m_insertStmtHandle);
+        sqlite3_finalize(m_gameNamesHandle);
+        sqlite3_finalize(m_gameHandle);
         sqlite3_close(m_db);
         throw std::runtime_error(errstr);
     }
@@ -89,7 +108,33 @@ Game Database::game(const std::string& name) {
 }
 
 void Database::update_game(const Game& g) {
-    // TODO
+    if(g.year())
+        checkSqliteCall(sqlite3_bind_int(m_gameUpdateHandle, 1, *(g.year())), SQLITE_OK);
+    else
+        checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 1), SQLITE_OK);
+
+    if(g.editor())
+        checkSqliteCall(sqlite3_bind_text(m_gameUpdateHandle, 2, g.editor()->c_str(), g.editor()->length(), SQLITE_STATIC), SQLITE_OK);
+    else
+        checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 2), SQLITE_OK);
+
+    if(!g.gameImg().isNull())
+        checkSqliteCall(sqlite3_bind_blob(m_gameUpdateHandle, 3, g.gameImg().constBits(), g.gameImg().byteCount(), SQLITE_STATIC), SQLITE_OK);
+    else
+        checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 3), SQLITE_OK);
+
+    checkSqliteCall(sqlite3_bind_blob(m_gameUpdateHandle, 4, g.analysis().constBits(), g.analysis().byteCount(), SQLITE_STATIC), SQLITE_OK);
+
+    if(g.description())
+        checkSqliteCall(sqlite3_bind_text(m_gameUpdateHandle, 5, g.description()->c_str(), g.description()->length(), SQLITE_STATIC), SQLITE_OK);
+    else
+        checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 5), SQLITE_OK);
+
+    checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 6, g.name().c_str(), g.name().length(), SQLITE_STATIC), SQLITE_OK);
+
+    // Parameters bound, run the statement
+    checkSqliteCall(sqlite3_step(m_gameUpdateHandle), SQLITE_DONE);
+    checkSqliteCall(sqlite3_reset(m_gameUpdateHandle), SQLITE_OK);
 }
 
 void Database::create(const QString& filename) {
