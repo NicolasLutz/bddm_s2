@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QFileDialog>
 #include <QImage>
+#include <QFileInfo>
 
 #include "Common.h"
 #include "Analyser.h"
@@ -32,19 +33,32 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_actionNew_triggered();
+    void on_pushButton_4_clicked();
 
-    void on_actionOpen_database_triggered();
+    void on_pushButton_5_clicked();
 
-    private:
+    void on_pushButton_2_clicked();
 
-    float hudMaskDistanceCalculation(QImage *img1, QImage *img2) const;
+    void on_pushButton_3_clicked();
+
+    void on_pushButton_6_clicked();
+
+private:
+
+    float hudMaskDistanceCalculation(const QImage *img1, const QImage *img2) const;
     float fromIntCoordinate(int value, int size) const {return value/size;}
     int toIntCoordinate(float value, int size) const {return value*size;}
     int toPtrLocation(int x, int y, int width) const {return y*width+x;}
 
+    //erase result fields associated with the game
+    void eraseResults(bool readOnly=false);
+
+    //Finds the game from the db using the computed hud mask and fills the empty spaces
+    void findGame();
+
     Ui::MainWindow *ui;
     QString m_videoFilename;
+    QImage m_closestHudMask;
 
     Analyser m_analyser;
 
@@ -52,6 +66,11 @@ private slots:
     Analyser_HUD_Detection m_ahd;
 
     Database* m_db;
+
+    QString m_name;
+    QString m_editor;
+    QString m_description;
+    int m_year;
 };
 
 #endif // MAINWINDOW_H

@@ -13,7 +13,39 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ahd(),
     m_db(nullptr)
 {
+    const QString dbName="game.db";
+
+    QFileInfo check_file(dbName);
+    if(!check_file.exists() || !check_file.isFile())
+    {
+        try
+        {
+            Database::create(dbName);
+        }
+        catch(std::runtime_error& e)
+        {
+            std::ostringstream oss;
+            oss << "Failed to create database : " << e.what();
+            QMessageBox::critical(this, "Database error", QString::fromStdString(oss.str()));
+        }
+    }
+
+    try
+    {
+        m_db = new Database("game.db");
+    }
+    catch(std::runtime_error& e)
+    {
+        std::ostringstream oss;
+        oss << "Failed to open database : " << e.what();
+        QMessageBox::critical(this, "Database error", QString::fromStdString(oss.str()));
+    }
+
     ui->setupUi(this);
+
+    ui->widget->hide();
+    ui->horizontalWidget_answer->hide();
+    ui->horizontalWidget_submit->hide();
 
     VLCPlayer::init(&m_analyser);
     m_analyser.addAnalyser(&m_acd);
@@ -31,18 +63,6 @@ void MainWindow::on_actionLoad_triggered()
                                                  "/home",
                                                  tr("Videos (*.mp4 *.avi *.ogv)"));
     ui->lineEdit->setText(m_videoFilename);
-    if(!m_videoFilename.isEmpty())
-    {
-        VLCPlayer::loadFile(m_videoFilename);
-        VLCPlayer::release();
-
-        m_analyser.produceOutputs();
-        if(m_ahd.getImg()!=NULL)
-        {
-            ui->label_2->setPixmap(QPixmap::fromImage(*(m_ahd.getImg())));
-            m_ahd.getImg()->save("output.png");
-        }
-    }
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -50,7 +70,7 @@ void MainWindow::on_pushButton_clicked()
     on_actionLoad_triggered();
 }
 
-float MainWindow::hudMaskDistanceCalculation(QImage *img1, QImage *img2) const
+float MainWindow::hudMaskDistanceCalculation(const QImage *img1, const QImage *img2) const
 {
     Q_ASSERT(img1!=NULL && img2!=NULL
             && img1->format()==QImage::Format_Grayscale8
@@ -92,39 +112,109 @@ float MainWindow::hudMaskDistanceCalculation(QImage *img1, QImage *img2) const
     return (float)distance/(wI1*hI1);
 }
 
-void MainWindow::on_actionNew_triggered()
+void MainWindow::on_pushButton_4_clicked() //Yes
 {
-    QString dbName = QFileDialog::getSaveFileName(this, "Create database", ".");
-    if(dbName.isEmpty())
-        return;
+    //We're happy
+    ui->horizontalWidget_answer->hide();
+    ui->widget->hide();
 
-    try {
-        Database::create(dbName);
+    eraseResults();
+}
+
+void MainWindow::on_pushButton_5_clicked() //No
+{
+    //We're sad and we ask for knowledge
+    ui->horizontalWidget_answer->hide();
+    ui->horizontalWidget_submit->show();
+
+    eraseResults(false);
+}
+
+void MainWindow::on_pushButton_2_clicked() //Don't know
+{
+    //We're happy too
+    on_pushButton_4_clicked();
+}
+
+void MainWindow::on_pushButton_3_clicked() //Results
+{
+    if(!m_videoFilename.isEmpty())
+    {
+        VLCPlayer::loadFile(m_videoFilename);
+        VLCPlayer::release();
+
+        m_analyser.produceOutputs();
+        if(m_ahd.getImg()!=NULL)
+        {
+            ui->label_2->setPixmap(QPixmap::fromImage(*(m_ahd.getImg())));
+            m_ahd.getImg()->save("output.png");
+        }
+
+        findGame();
+
+        ui->widget->show();
+        ui->horizontalWidget_answer->show();
+
     }
-    catch(std::runtime_error& e) {
+}
+
+void MainWindow::on_pushButton_6_clicked() //Submit
+{
+    QImage emptyImage;
+    QString *editor=new QString(ui->lineEdit_editor->text());
+    QString *description=new QString(ui->lineEdit_desc->text());
+    int *year=new int(ui->spinBox_year->value());
+    Game newGame(ui->lineEdit_game->text(), *m_ahd.getImg(), editor, description, emptyImage, year);
+    try{
+        m_db->insert_game(newGame);
+        ui->horizontalWidget_submit->hide();
+        ui->widget->hide();
+        eraseResults(true);
+    }
+    catch(std::runtime_error& e){
         std::ostringstream oss;
-        oss << "Could not create database : " << e.what();
+        oss << "Failed to submit : " << e.what();
         QMessageBox::critical(this, "Database error", QString::fromStdString(oss.str()));
     }
 }
 
-void MainWindow::on_actionOpen_database_triggered()
+void MainWindow::eraseResults(bool readOnly)
 {
-    QString dbName = QFileDialog::getOpenFileName(this, "Open database", ".");
-    if(dbName.isEmpty())
+    ui->lineEdit_game->setText(QString(""));
+    ui->lineEdit_editor->setText(QString(""));
+    ui->spinBox_year->setValue(QDate::currentDate().year());
+    ui->lineEdit_desc->setText(QString(""));
+
+    ui->lineEdit_game->setReadOnly(readOnly);
+    ui->lineEdit_editor->setReadOnly(readOnly);
+    ui->spinBox_year->setReadOnly(readOnly);
+    ui->lineEdit_desc->setReadOnly(readOnly);
+}
+
+void MainWindow::findGame()
+{
+    float minDist=std::numeric_limits<float>::max();
+    std::vector<QString> games=m_db->games();
+
+    if(games.size()==0)
         return;
 
-    if(m_db) {
-        delete m_db;
-        m_db = nullptr;
+    Game fetchGame;
+    Game bestGame;
+
+    for(QString gameString: games)
+    {
+        fetchGame=m_db->game(gameString);
+        float currentDist=hudMaskDistanceCalculation(m_ahd.getImg(), &(fetchGame.analysis()));
+        if(minDist>currentDist)
+        {
+            minDist=currentDist;
+            bestGame=fetchGame;
+        }
     }
 
-    try {
-        m_db = new Database(dbName);
-    }
-    catch(std::runtime_error& e) {
-        std::ostringstream oss;
-        oss << "Could not open database : " << e.what();
-        QMessageBox::critical(this, "Database error", QString::fromStdString(oss.str()));
-    }
+    ui->lineEdit_game->setText(bestGame.name());
+    ui->lineEdit_editor->setText(bestGame.editor()!=NULL ? *bestGame.editor() : QString(""));
+    ui->spinBox_year->setValue(bestGame.year()!=NULL ? *bestGame.year() : QDate::currentDate().year());
+    ui->lineEdit_desc->setText(bestGame.description()!=NULL ? *bestGame.description() : QString(""));
 }

@@ -163,7 +163,7 @@ void Database::update_game(const Game& g) {
             insert_editor(*g.editor());
             id = editor_id(*g.editor());
         }
-        checkSqliteCall(sqlite3_bind_int(m_gameUpdateHandle, 2, id), SQLITE_OK);
+        checkSqliteCall(sqlite3_bind_int(m_gameUpdateHandle, 2, *id), SQLITE_OK);
         delete id;
     }
     else
