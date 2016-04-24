@@ -17,10 +17,10 @@ class Database
         virtual ~Database();
 
         // Return list of game names
-        std::vector<std::string> games();
+        std::vector<QString> games();
 
         // Return the matching Game object, throws if it doesn't exist
-        Game game(std::string const& name);
+        Game game(QString const& name);
         // Modify the matching Game object, throws if it doesn't exist
         void update_game(Game const& g);
         // Insert a new game in the database, throws if it already exists

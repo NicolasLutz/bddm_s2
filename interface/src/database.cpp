@@ -12,7 +12,7 @@ const std::string Database::c_sqlCreateDb = "CREATE TABLE games("
                                               "description TEXT);";
 
 const std::string Database::c_sqlInsertGame = "INSERT INTO games(name, year, editor, description, img, analysis_img) VALUES(?,?,?,?,?,?);";
-const std::string Database::c_sqlGameNames = "SELECT name FROM games;";
+const std::string Database::c_sqlGameNames = "SELECT name FROM games ORDER BY id ASC;";
 const std::string Database::c_sqlGameUpdate = "UPDATE games SET "
                                               "year=?,"
                                               "editor=?,"
@@ -78,30 +78,30 @@ Database::~Database() {
     sqlite3_close(m_db);
 }
 
-std::vector<std::string> Database::games() {
+std::vector<QString> Database::games() {
     sqlite3_reset(m_gameNamesHandle);
-    std::vector<std::string> v;
+    std::vector<QString> v;
     int sqliteCode = sqlite3_step(m_gameNamesHandle);
     while(sqliteCode != SQLITE_DONE) {
         checkSqliteCall(sqliteCode, SQLITE_ROW);
 
-        v.push_back(std::string(reinterpret_cast<const char*>(sqlite3_column_text(m_gameNamesHandle, 1))));
+        v.push_back(QString(reinterpret_cast<const char*>(sqlite3_column_text(m_gameNamesHandle, 1))));
 
         sqliteCode = sqlite3_step(m_gameNamesHandle);
     }
     return v;
 }
 
-Game Database::game(const std::string& name) {
-    checkSqliteCall(sqlite3_bind_text(m_gameHandle, 1, name.c_str(), name.length(), SQLITE_STATIC), SQLITE_OK);
+Game Database::game(const QString& name) {
+    checkSqliteCall(sqlite3_bind_text(m_gameHandle, 1, name.toStdString().c_str(), name.length(), SQLITE_STATIC), SQLITE_OK);
     checkSqliteCall(sqlite3_step(m_gameHandle), SQLITE_ROW);
     QImage analysis = QImage::fromData(reinterpret_cast<const char*>(sqlite3_column_blob(m_gameHandle, 5), sqlite3_column_bytes(m_gameHandle, 5)));
     bool nullEditor = (sqlite3_column_type(m_gameHandle, 2) == SQLITE_NULL),
          nullYear   = (sqlite3_column_type(m_gameHandle, 1) == SQLITE_NULL),
          nullImg    = (sqlite3_column_type(m_gameHandle, 4) == SQLITE_NULL),
          nullDesc   = (sqlite3_column_type(m_gameHandle, 3) == SQLITE_NULL);
-    std::string* editor = nullEditor ? nullptr : new std::string(reinterpret_cast<const char*>(sqlite3_column_text(m_gameHandle, 2)));
-    std::string* desc   = nullDesc   ? nullptr : new std::string(reinterpret_cast<const char*>(sqlite3_column_text(m_gameHandle, 3)));
+    QString* editor = nullEditor ? nullptr : new QString(reinterpret_cast<const char*>(sqlite3_column_text(m_gameHandle, 2)));
+    QString* desc   = nullDesc   ? nullptr : new QString(reinterpret_cast<const char*>(sqlite3_column_text(m_gameHandle, 3)));
     int* year = nullYear ? nullptr : new int(sqlite3_column_int(m_gameHandle, 1));
     QImage img = nullImg ? QImage() : QImage::fromData(reinterpret_cast<const char*>(sqlite3_column_blob(m_gameHandle, 4), sqlite3_column_bytes(m_gameHandle, 4)));
     return Game(name, analysis, editor, desc, img, year);
@@ -114,7 +114,7 @@ void Database::update_game(const Game& g) {
         checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 1), SQLITE_OK);
 
     if(g.editor())
-        checkSqliteCall(sqlite3_bind_text(m_gameUpdateHandle, 2, g.editor()->c_str(), g.editor()->length(), SQLITE_STATIC), SQLITE_OK);
+        checkSqliteCall(sqlite3_bind_text(m_gameUpdateHandle, 2, g.editor()->toStdString().c_str(), g.editor()->length(), SQLITE_STATIC), SQLITE_OK);
     else
         checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 2), SQLITE_OK);
 
@@ -126,11 +126,11 @@ void Database::update_game(const Game& g) {
     checkSqliteCall(sqlite3_bind_blob(m_gameUpdateHandle, 4, g.analysis().constBits(), g.analysis().byteCount(), SQLITE_STATIC), SQLITE_OK);
 
     if(g.description())
-        checkSqliteCall(sqlite3_bind_text(m_gameUpdateHandle, 5, g.description()->c_str(), g.description()->length(), SQLITE_STATIC), SQLITE_OK);
+        checkSqliteCall(sqlite3_bind_text(m_gameUpdateHandle, 5, g.description()->toStdString().c_str(), g.description()->length(), SQLITE_STATIC), SQLITE_OK);
     else
         checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 5), SQLITE_OK);
 
-    checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 6, g.name().c_str(), g.name().length(), SQLITE_STATIC), SQLITE_OK);
+    checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 6, g.name().toStdString().c_str(), g.name().length(), SQLITE_STATIC), SQLITE_OK);
 
     // Parameters bound, run the statement
     checkSqliteCall(sqlite3_step(m_gameUpdateHandle), SQLITE_DONE);
@@ -162,7 +162,7 @@ void Database::create(const QString& filename) {
 }
 
 void Database::insert_game(const Game& g) {
-    checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 1, g.name().c_str(), g.name().length(), SQLITE_STATIC), SQLITE_OK);
+    checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 1, g.name().toStdString().c_str(), g.name().length(), SQLITE_STATIC), SQLITE_OK);
 
     if(g.year())
         checkSqliteCall(sqlite3_bind_int(m_insertStmtHandle, 2, *(g.year())), SQLITE_OK);
@@ -170,12 +170,12 @@ void Database::insert_game(const Game& g) {
         checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 2), SQLITE_OK);
 
     if(g.editor())
-        checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 3, g.editor()->c_str(), g.editor()->length(), SQLITE_STATIC), SQLITE_OK);
+        checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 3, g.editor()->toStdString().c_str(), g.editor()->length(), SQLITE_STATIC), SQLITE_OK);
     else
         checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 3), SQLITE_OK);
 
     if(g.description())
-        checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 4, g.description()->c_str(), g.description()->length(), SQLITE_STATIC), SQLITE_OK);
+        checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 4, g.description()->toStdString().c_str(), g.description()->length(), SQLITE_STATIC), SQLITE_OK);
     else
         checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 4), SQLITE_OK);
 

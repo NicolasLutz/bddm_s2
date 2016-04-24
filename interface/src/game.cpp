@@ -1,7 +1,7 @@
 #include "game.h"
 
-Game::Game(std::string const& name, QImage const& analysis,
-           std::string* editor, std::string* description, QImage const& img, int* year) :
+Game::Game(QString const& name, QImage const& analysis,
+           QString* editor, QString* description, QImage const& img, int* year) :
     m_name(name),
     m_analysisImg(analysis),
     m_gameImg(img),
@@ -13,15 +13,25 @@ Game::Game(std::string const& name, QImage const& analysis,
 
 }
 
-std::string const& Game::name() const {
+Game::~Game()
+{
+    if(m_editor)
+        delete m_editor;
+    if(m_year)
+        delete m_year;
+    if(m_description)
+        delete m_editor;
+}
+
+QString const& Game::name() const {
     return m_name;
 }
 
-const std::string* Game::editor() const {
+const QString* Game::editor() const {
     return m_editor;
 }
 
-const std::string* Game::description() const {
+const QString* Game::description() const {
     return m_description;
 }
 
@@ -37,7 +47,7 @@ const int* Game::year() const {
     return m_year;
 }
 
-void Game::setName(const std::string& name) {
+void Game::setName(const QString& name) {
     if(name != m_name) {
         m_dirty = true;
         m_name = name;
@@ -58,12 +68,12 @@ void Game::setGameImg(QImage& gameImg) {
     }
 }
 
-void Game::setEditor(std::string* editor) {
-    setPtrMember<std::string>(m_editor, editor);
+void Game::setEditor(QString* editor) {
+    setPtrMember<QString>(m_editor, editor);
 }
 
-void Game::setDescription(std::string* description) {
-    setPtrMember<std::string>(m_description, description);
+void Game::setDescription(QString* description) {
+    setPtrMember<QString>(m_description, description);
 }
 
 
