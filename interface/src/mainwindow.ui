@@ -219,7 +219,14 @@
     </property>
     <addaction name="actionLoad"/>
    </widget>
+   <widget class="QMenu" name="menuDebug">
+    <property name="title">
+     <string>Debug</string>
+    </property>
+    <addaction name="actionGod_mode"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuDebug"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -232,6 +239,11 @@
   <action name="actionLoad">
    <property name="text">
     <string>&amp;Load...</string>
+   </property>
+  </action>
+  <action name="actionGod_mode">
+   <property name="text">
+    <string>Load fake analysis</string>
    </property>
   </action>
  </widget>

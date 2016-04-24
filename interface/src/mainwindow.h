@@ -43,6 +43,8 @@ private slots:
 
     void on_pushButton_6_clicked();
 
+    void on_actionGod_mode_triggered();
+
 private:
 
     float hudMaskDistanceCalculation(const QImage *img1, const QImage *img2) const;

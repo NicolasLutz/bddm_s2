@@ -18,6 +18,7 @@ public:
     void produceOutput();
 
     QImage *getImg() const;
+    void debug_setImgfromFile(const QString& filename);
 
 private:
     QImage          *m_hudMaskGreyscale;

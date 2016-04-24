@@ -124,6 +124,7 @@ void MainWindow::on_pushButton_4_clicked() //Yes
 void MainWindow::on_pushButton_5_clicked() //No
 {
     //We're sad and we ask for knowledge
+    ui->widget->show();
     ui->horizontalWidget_answer->hide();
     ui->horizontalWidget_submit->show();
 
@@ -161,8 +162,8 @@ void MainWindow::on_pushButton_3_clicked() //Results
 void MainWindow::on_pushButton_6_clicked() //Submit
 {
     QImage emptyImage;
-    QString *editor=new QString(ui->lineEdit_editor->text());
-    QString *description=new QString(ui->lineEdit_desc->text());
+    QString *editor=!ui->lineEdit_editor->text().isEmpty() ? new QString(ui->lineEdit_editor->text()) : NULL;
+    QString *description=!ui->lineEdit_desc->text().isEmpty() ? new QString(ui->lineEdit_desc->text()) : NULL;
     int *year=new int(ui->spinBox_year->value());
     Game newGame(ui->lineEdit_game->text(), *m_ahd.getImg(), editor, description, emptyImage, year);
     try{
@@ -217,4 +218,11 @@ void MainWindow::findGame()
     ui->lineEdit_editor->setText(bestGame.editor()!=NULL ? *bestGame.editor() : QString(""));
     ui->spinBox_year->setValue(bestGame.year()!=NULL ? *bestGame.year() : QDate::currentDate().year());
     ui->lineEdit_desc->setText(bestGame.description()!=NULL ? *bestGame.description() : QString(""));
+}
+
+void MainWindow::on_actionGod_mode_triggered()
+{
+    m_ahd.debug_setImgfromFile("output.png");
+    ui->label_2->setPixmap(QPixmap::fromImage(*(m_ahd.getImg())));
+    on_pushButton_5_clicked();
 }

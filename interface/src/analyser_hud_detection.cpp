@@ -76,3 +76,8 @@ QImage *Analyser_HUD_Detection::getImg() const
 {
     return m_hudMaskGreyscale;
 }
+
+void Analyser_HUD_Detection::debug_setImgfromFile(const QString& filename)
+{
+    m_hudMaskGreyscale= new QImage(filename);
+}
