@@ -1,5 +1,17 @@
 #include "game.h"
 
+Game::Game() :
+    m_name(),
+    m_analysisImg(),
+    m_gameImg(),
+    m_editor(nullptr),
+    m_description(nullptr),
+    m_year(nullptr),
+    m_dirty(false)
+{
+
+}
+
 Game::Game(QString const& name, QImage const& analysis,
            QString* editor, QString* description, QImage const& img, int* year) :
     m_name(name),
@@ -21,6 +33,16 @@ Game::~Game()
         delete m_year;
     if(m_description)
         delete m_editor;
+}
+
+Game Game::operator=(const Game& other) {
+    m_name        = other.m_name;
+    m_analysisImg = other.m_analysisImg;
+    m_gameImg     = other.m_gameImg;
+    m_editor      = other.m_editor ? new QString(*other.m_editor) : nullptr;
+    m_year        = other.m_year ? new int(*other.m_year) : nullptr;
+    m_description = other.m_description ? new QString(*other.m_description) : nullptr;
+    m_dirty       = true;
 }
 
 QString const& Game::name() const {

@@ -7,10 +7,12 @@
 class Game
 {
     public:
+        Game();
         Game(QString const& name, QImage const& analysis,
              QString* editor, QString* description, QImage const& img, int* year);
 
         virtual ~Game();
+        Game operator=(Game const& other);
 
         // Getters
         QString const& name() const;
