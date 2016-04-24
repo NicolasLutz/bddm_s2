@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QFileDialog>
+#include <QImage>
 
 #include "Common.h"
 #include "Analyser.h"
@@ -37,7 +38,10 @@ private slots:
 
     private:
 
-    float hudMaskDistanceCalculation(QImage *img1, QImage *img2) const;
+    int hudMaskDistanceCalculation(QImage *img1, QImage *img2) const;
+    float fromIntCoordinate(int value, int size) const {return value/size;}
+    int toIntCoordinate(float value, int size) const {return value*size;}
+    int toPtrLocation(int x, int y, int width) const {return y*width+x;}
 
     Ui::MainWindow *ui;
     QString m_videoFilename;

@@ -47,21 +47,46 @@ void MainWindow::on_pushButton_clicked()
     on_actionLoad_triggered();
 }
 
-float MainWindow::hudMaskDistanceCalculation(QImage *img1, QImage *img2) const
+int MainWindow::hudMaskDistanceCalculation(QImage *img1, QImage *img2) const
 {
     Q_ASSERT(img1!=NULL && img2!=NULL
             && img1->format()==QImage::Format_Grayscale8
             && img2->format()==QImage::Format_Grayscale8);
 
-    quint8 *img1Ptr = (quint8 *) img1->bits();
-    quint8 *img2Ptr = (quint8 *) img2->bits();
+    int distance=0;
+    quint8 *img1Ptr;
+    quint8 *img2Ptr;
+    int wI1, hI1, wI2, hI2;
 
-    quint64 pixelCount = img1->width() * img1->height();
-
-    for (quint64 p = 0; p < pixelCount; p++)
+    if(img1->width() < img2->width())
     {
-
+        img1Ptr=(quint8 *) img2->bits();
+        img2Ptr=(quint8 *) img1->bits();
+        wI1= img2->width();
+        hI1=img2->height();
+        wI2= img1->width();
+        hI2= img1->height();
     }
+    else
+    {
+        img1Ptr=(quint8 *) img1->bits();
+        img2Ptr=(quint8 *) img2->bits();
+        wI1= img1->width();
+        hI1=img1->height();
+        wI2= img2->width();
+        hI2= img2->height();
+    }
+
+    for (int x=0; x<wI1; ++x)
+    {
+        int xImg2=toIntCoordinate(fromIntCoordinate(x, wI1), wI2);
+        for (int y=0; y<hI1; ++y)
+        {
+            int yImg2=toIntCoordinate(fromIntCoordinate(y, hI1), hI2);
+            distance+=(img2Ptr[toPtrLocation(xImg2, yImg2, wI2)]-img1Ptr[toPtrLocation(x, y, wI1)]);
+        }
+    }
+    return distance;
 }
 
 void MainWindow::on_actionNew_triggered()
