@@ -144,7 +144,7 @@ Game Database::game(const QString& name) {
          nullYear   = (sqlite3_column_type(m_gameHandle, 1) == SQLITE_NULL),
          nullImg    = (sqlite3_column_type(m_gameHandle, 4) == SQLITE_NULL),
          nullDesc   = (sqlite3_column_type(m_gameHandle, 3) == SQLITE_NULL);
-    QString* editor = nullEditor ? nullptr : new QString(reinterpret_cast<const char*>(sqlite3_column_text(m_gameHandle, 2)));
+    QString* editor = nullEditor ? nullptr : new QString(editor_name(sqlite3_column_int(m_gameHandle, 2)));
     QString* desc   = nullDesc   ? nullptr : new QString(reinterpret_cast<const char*>(sqlite3_column_text(m_gameHandle, 3)));
     int* year = nullYear ? nullptr : new int(sqlite3_column_int(m_gameHandle, 1));
     QImage img = nullImg ? QImage() : QImage::fromData(reinterpret_cast<const char*>(sqlite3_column_blob(m_gameHandle, 4), sqlite3_column_bytes(m_gameHandle, 4)));
@@ -157,8 +157,15 @@ void Database::update_game(const Game& g) {
     else
         checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 1), SQLITE_OK);
 
-    if(g.editor())
-        checkSqliteCall(sqlite3_bind_text(m_gameUpdateHandle, 2, g.editor()->toStdString().c_str(), g.editor()->length(), SQLITE_STATIC), SQLITE_OK);
+    if(g.editor()) {
+        int* id = editor_id(*g.editor());
+        if(!id) {
+            insert_editor(*g.editor());
+            id = editor_id(*g.editor());
+        }
+        checkSqliteCall(sqlite3_bind_int(m_gameUpdateHandle, 2, id), SQLITE_OK);
+        delete id;
+    }
     else
         checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 2), SQLITE_OK);
 
