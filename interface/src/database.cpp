@@ -1,6 +1,8 @@
 #include "database.h"
 
 #include <qfile.h>
+#include <qbuffer.h>
+#include <qbytearray.h>
 
 const std::string Database::c_sqlCreateDb = "CREATE TABLE editors("
                                                 "id INTEGER PRIMARY KEY,"
@@ -141,7 +143,9 @@ std::vector<QString> Database::games() {
 Game Database::game(const QString& name) {
     checkSqliteCall(sqlite3_bind_text(m_gameHandle, 1, name.toStdString().c_str(), name.length(), SQLITE_STATIC), SQLITE_OK);
     checkSqliteCall(sqlite3_step(m_gameHandle), SQLITE_ROW);
-    QImage analysis = QImage::fromData(reinterpret_cast<const char*>(sqlite3_column_blob(m_gameHandle, 4), sqlite3_column_bytes(m_gameHandle, 4)));
+    int bytes = sqlite3_column_bytes(m_gameHandle, 4);
+    const void* ptr = sqlite3_column_blob(m_gameHandle, 4);
+    QImage analysis = QImage::fromData(reinterpret_cast<const char*>(ptr, bytes), "PNG");
     bool nullEditor = (sqlite3_column_type(m_gameHandle, 1) == SQLITE_NULL),
          nullYear   = (sqlite3_column_type(m_gameHandle, 0) == SQLITE_NULL),
          nullImg    = (sqlite3_column_type(m_gameHandle, 3) == SQLITE_NULL),
@@ -239,10 +243,21 @@ void Database::insert_game(const Game& g) {
     else
         checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 4), SQLITE_OK);
 
-    checkSqliteCall(sqlite3_bind_blob(m_insertStmtHandle, 6, g.analysis().constBits(), g.analysis().byteCount(), SQLITE_STATIC), SQLITE_OK);
+    QByteArray ba;
+    QBuffer buf(&ba);
+    buf.open(QIODevice::WriteOnly);
+    g.analysis().save(&buf, "PNG");
+    buf.close();
 
-    if(!g.gameImg().isNull())
-        checkSqliteCall(sqlite3_bind_blob(m_insertStmtHandle, 5, g.gameImg().constBits(), g.gameImg().byteCount(), SQLITE_STATIC), SQLITE_OK);
+    checkSqliteCall(sqlite3_bind_blob(m_insertStmtHandle, 6, ba.data(), ba.size(), SQLITE_STATIC), SQLITE_OK);
+
+    if(!g.gameImg().isNull()){
+        ba.clear();
+        buf.open(QIODevice::WriteOnly);
+        g.gameImg().save(&buf, "PNG");
+        buf.close();
+        checkSqliteCall(sqlite3_bind_blob(m_insertStmtHandle, 5, ba.data(), ba.size(), SQLITE_STATIC), SQLITE_OK);
+    }
     else
         checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 5), SQLITE_OK);
 
