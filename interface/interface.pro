@@ -40,8 +40,6 @@ VPATH   =   $$PWD/src
 SOURCES += main.cpp\
         mainwindow.cpp \
     src/Analyser.cpp \
-    src/VLCPlayer.cpp \
-    src/VLCHandler.cpp \
     src/FrameValue.cpp \
     src/analyser_hud_detection.cpp \
     src/abstractsubanalyser.cpp \
@@ -54,8 +52,6 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     src/Analyser.h \
     src/Common.h \
-    src/VLCPlayer.h \
-    src/VLCHandler.h \
     src/FrameValue.h \
     src/analyser_hud_detection.h \
     src/abstractsubanalyser.h \
@@ -68,4 +64,4 @@ FORMS    += mainwindow.ui
 message(Qt version: $$[QT_VERSION])
 message(Qt is installed in $$[QT_INSTALL_PREFIX])
 
-unix|win32: LIBS += -L"lib/" -lvlc -lsqlite3
+unix|win32: LIBS += -L"lib/" -lavformat -lavutil -lavcodec -lswscale -lsqlite3

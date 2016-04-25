@@ -4,24 +4,24 @@
 #include <QVector>
 
 #include "Common.h"
-#include "VLCHandler.h"
 #include "FrameValue.h"
 #include "abstractsubanalyser.h"
 
-class Analyser : public VLCHandler {
+class Analyser {
 public:
     Analyser();
-	~Analyser();
+    ~Analyser();
 
-	virtual void cbAudioPostrender(void* p_audio_data, uint8_t * p_pcm_buffer, unsigned int channels, unsigned int rate, unsigned int nb_samples, unsigned int bits_per_sample, unsigned int size, int64_t pts );
-	virtual void cbVideoPostrender(void *p_video_data, uint8_t * p_pixel_buffer, int width, int height, int pixel_pitch, int size, int64_t pts);
+    virtual void cbVideoPostrender(uint8_t * p_pixel_buffer, int width, int height, int pixel_pitch);
 
     void addAnalyser(ASubAnalyser *analyser);
     void produceOutputs();
 
-private:
+    void analyze_video(QString const& f);
 
+private:
     std::vector<ASubAnalyser *> m_videoAnalysers;
+    QString m_videoFile;
 };
 
 #endif // ANALYSER_H

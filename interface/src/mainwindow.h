@@ -8,7 +8,6 @@
 
 #include "Common.h"
 #include "Analyser.h"
-#include "VLCPlayer.h"
 
 #include "analyser_color_detection.h"
 #include "analyser_hud_detection.h"

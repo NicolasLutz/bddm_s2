@@ -47,14 +47,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->horizontalWidget_answer->hide();
     ui->horizontalWidget_submit->hide();
 
-    VLCPlayer::init(&m_analyser);
     m_analyser.addAnalyser(&m_acd);
     m_analyser.addAnalyser(&m_ahd);
 }
 
 MainWindow::~MainWindow()
 {
-    VLCPlayer::release();
     delete ui;
 }
 
@@ -127,20 +125,26 @@ void MainWindow::on_pushButton_3_clicked() //Results
 {
     if(!m_videoFilename.isEmpty())
     {
-        VLCPlayer::loadFile(m_videoFilename);
+        try {
+            m_analyser.analyze_video(m_videoFilename);
 
-        m_analyser.produceOutputs();
-        if(m_ahd.getImg()!=NULL)
-        {
-            ui->label_2->setPixmap(QPixmap::fromImage(*(m_ahd.getImg())));
-            m_ahd.getImg()->save("output.png");
+            m_analyser.produceOutputs();
+            if(m_ahd.getImg()!=NULL)
+            {
+                ui->label_2->setPixmap(QPixmap::fromImage(*(m_ahd.getImg())));
+                m_ahd.getImg()->save("output.png");
+            }
+
+            findGame();
+
+            ui->widget->show();
+            ui->horizontalWidget_answer->show();
         }
-
-        findGame();
-
-        ui->widget->show();
-        ui->horizontalWidget_answer->show();
-
+        catch(std::runtime_error& e) {
+            std::ostringstream oss;
+            oss << "Failed to analyze media file : " << e.what();
+            QMessageBox::critical(this, "I'm afraid I can't do that, Dave.", QString::fromStdString(oss.str()));
+        }
     }
 }
 
