@@ -35,7 +35,7 @@ void Analyser::produceOutputs()
 }
 
 void Analyser::analyze_video(const QString& f) {
-    // "God function", should be broken up, but won't be because reasons
+    // "God function", should be broken up in smaller chunks, but won't be because reasons
     AVFormatContext* av_context = nullptr;
 
     // Read input stream header
@@ -100,15 +100,17 @@ void Analyser::analyze_video(const QString& f) {
                 sws_scale(swscale_context, framebuf->data,
                           framebuf->linesize, 0, codec_context->height,
                           frame_rgb->data, frame_rgb->linesize);
-
                 cbVideoPostrender(frame_rgb->data[0], codec_context->width, codec_context->height, 24);
-
                 av_free_packet(&p);
             }
         }
     }
 
-
+    // Cleanup our mess
+    av_free(buf);
+    av_free(framebuf);
+    av_free(frame_rgb);
+    avcodec_close(codec_context);
+    avcodec_close(codec_context_orig);
     avformat_close_input(&av_context);
-
 }
