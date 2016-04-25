@@ -125,7 +125,6 @@ Database::~Database() {
 }
 
 std::vector<QString> Database::games() {
-    sqlite3_reset(m_gameNamesHandle);
     std::vector<QString> v;
     int sqliteCode = sqlite3_step(m_gameNamesHandle);
     while(sqliteCode != SQLITE_DONE) {
@@ -137,6 +136,7 @@ std::vector<QString> Database::games() {
 
         sqliteCode = sqlite3_step(m_gameNamesHandle);
     }
+    checkSqliteCall(sqlite3_reset(m_gameNamesHandle), SQLITE_OK);
     return v;
 }
 
@@ -155,6 +155,7 @@ Game Database::game(const QString& name) {
     QString* desc   = nullDesc   ? nullptr : new QString(reinterpret_cast<const char*>(sqlite3_column_text(m_gameHandle, 2)));
     int* year = nullYear ? nullptr : new int(sqlite3_column_int(m_gameHandle, 0));
     QImage img = nullImg ? QImage() : QImage::fromData(reinterpret_cast<const char*>(sqlite3_column_blob(m_gameHandle, 3), sqlite3_column_bytes(m_gameHandle, 3)), "PNG");
+    checkSqliteCall(sqlite3_reset(m_gameHandle), SQLITE_OK);
     return Game(name, analysis, editor, desc, img, year);
 }
 
