@@ -19,7 +19,7 @@ const std::string Database::c_sqlInsertEditor = "INSERT INTO editors(name) VALUE
 const std::string Database::c_sqlEditorId     = "SELECT id FROM editors WHERE name=?;";
 const std::string Database::c_sqlEditorName   = "SELECT name FROM editors WHERE id=?;";
 const std::string Database::c_sqlInsertGame   = "INSERT INTO games(name, year, editor, description, img, analysis_img) VALUES(?,?,?,?,?,?);";
-const std::string Database::c_sqlGameNames    = "SELECT name FROM games ORDER BY id ASC;";
+const std::string Database::c_sqlGameNames    = "SELECT name FROM games;";
 const std::string Database::c_sqlGameUpdate   = "UPDATE games SET "
                                                     "year=?,"
                                                     "editor=?,"
@@ -129,7 +129,9 @@ std::vector<QString> Database::games() {
     while(sqliteCode != SQLITE_DONE) {
         checkSqliteCall(sqliteCode, SQLITE_ROW);
 
-        v.push_back(QString(reinterpret_cast<const char*>(sqlite3_column_text(m_gameNamesHandle, 1))));
+        const unsigned char* str = sqlite3_column_text(m_gameNamesHandle, 0);
+
+        v.push_back(QString(reinterpret_cast<const char*>(str)));
 
         sqliteCode = sqlite3_step(m_gameNamesHandle);
     }
@@ -139,15 +141,15 @@ std::vector<QString> Database::games() {
 Game Database::game(const QString& name) {
     checkSqliteCall(sqlite3_bind_text(m_gameHandle, 1, name.toStdString().c_str(), name.length(), SQLITE_STATIC), SQLITE_OK);
     checkSqliteCall(sqlite3_step(m_gameHandle), SQLITE_ROW);
-    QImage analysis = QImage::fromData(reinterpret_cast<const char*>(sqlite3_column_blob(m_gameHandle, 5), sqlite3_column_bytes(m_gameHandle, 5)));
-    bool nullEditor = (sqlite3_column_type(m_gameHandle, 2) == SQLITE_NULL),
-         nullYear   = (sqlite3_column_type(m_gameHandle, 1) == SQLITE_NULL),
-         nullImg    = (sqlite3_column_type(m_gameHandle, 4) == SQLITE_NULL),
-         nullDesc   = (sqlite3_column_type(m_gameHandle, 3) == SQLITE_NULL);
-    QString* editor = nullEditor ? nullptr : new QString(editor_name(sqlite3_column_int(m_gameHandle, 2)));
-    QString* desc   = nullDesc   ? nullptr : new QString(reinterpret_cast<const char*>(sqlite3_column_text(m_gameHandle, 3)));
-    int* year = nullYear ? nullptr : new int(sqlite3_column_int(m_gameHandle, 1));
-    QImage img = nullImg ? QImage() : QImage::fromData(reinterpret_cast<const char*>(sqlite3_column_blob(m_gameHandle, 4), sqlite3_column_bytes(m_gameHandle, 4)));
+    QImage analysis = QImage::fromData(reinterpret_cast<const char*>(sqlite3_column_blob(m_gameHandle, 4), sqlite3_column_bytes(m_gameHandle, 4)));
+    bool nullEditor = (sqlite3_column_type(m_gameHandle, 1) == SQLITE_NULL),
+         nullYear   = (sqlite3_column_type(m_gameHandle, 0) == SQLITE_NULL),
+         nullImg    = (sqlite3_column_type(m_gameHandle, 3) == SQLITE_NULL),
+         nullDesc   = (sqlite3_column_type(m_gameHandle, 2) == SQLITE_NULL);
+    QString* editor = nullEditor ? nullptr : new QString(editor_name(sqlite3_column_int(m_gameHandle, 1)));
+    QString* desc   = nullDesc   ? nullptr : new QString(reinterpret_cast<const char*>(sqlite3_column_text(m_gameHandle, 2)));
+    int* year = nullYear ? nullptr : new int(sqlite3_column_int(m_gameHandle, 0));
+    QImage img = nullImg ? QImage() : QImage::fromData(reinterpret_cast<const char*>(sqlite3_column_blob(m_gameHandle, 3), sqlite3_column_bytes(m_gameHandle, 3)));
     return Game(name, analysis, editor, desc, img, year);
 }
 
@@ -251,7 +253,7 @@ void Database::insert_game(const Game& g) {
 
 int* Database::editor_id(QString const& editor) {
     checkSqliteCall(sqlite3_bind_text(m_editorIdHandle, 1, editor.toStdString().c_str(), editor.length(), SQLITE_STATIC), SQLITE_OK);
-    int* r = (sqlite3_step(m_editorIdHandle) == SQLITE_ROW) ? new int(sqlite3_column_int(m_editorIdHandle, 1)) : nullptr;
+    int* r = (sqlite3_step(m_editorIdHandle) == SQLITE_ROW) ? new int(sqlite3_column_int(m_editorIdHandle, 0)) : nullptr;
     sqlite3_reset(m_editorIdHandle);
     return r;
 }
@@ -260,7 +262,7 @@ QString Database::editor_name(const int id) {
     checkSqliteCall(sqlite3_bind_int(m_editorNameHandle, 1, id), SQLITE_OK);
     if(sqlite3_step(m_editorNameHandle) != SQLITE_ROW)
         throw std::runtime_error("No editor with such id");
-    QString name(reinterpret_cast<const char*>(sqlite3_column_text(m_editorNameHandle, 1)));
+    QString name(reinterpret_cast<const char*>(sqlite3_column_text(m_editorNameHandle, 0)));
     sqlite3_reset(m_editorNameHandle);
     return name;
 }
