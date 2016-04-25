@@ -146,6 +146,7 @@ Game Database::game(const QString& name) {
     int bytes = sqlite3_column_bytes(m_gameHandle, 4);
     const void* ptr = sqlite3_column_blob(m_gameHandle, 4);
     QImage analysis = QImage::fromData(reinterpret_cast<const char*>(ptr, bytes), "PNG");
+    analysis.save("test_load.png");
     bool nullEditor = (sqlite3_column_type(m_gameHandle, 1) == SQLITE_NULL),
          nullYear   = (sqlite3_column_type(m_gameHandle, 0) == SQLITE_NULL),
          nullImg    = (sqlite3_column_type(m_gameHandle, 3) == SQLITE_NULL),
@@ -153,7 +154,7 @@ Game Database::game(const QString& name) {
     QString* editor = nullEditor ? nullptr : new QString(editor_name(sqlite3_column_int(m_gameHandle, 1)));
     QString* desc   = nullDesc   ? nullptr : new QString(reinterpret_cast<const char*>(sqlite3_column_text(m_gameHandle, 2)));
     int* year = nullYear ? nullptr : new int(sqlite3_column_int(m_gameHandle, 0));
-    QImage img = nullImg ? QImage() : QImage::fromData(reinterpret_cast<const char*>(sqlite3_column_blob(m_gameHandle, 3), sqlite3_column_bytes(m_gameHandle, 3)));
+    QImage img = nullImg ? QImage() : QImage::fromData(reinterpret_cast<const char*>(sqlite3_column_blob(m_gameHandle, 3), sqlite3_column_bytes(m_gameHandle, 3)), "PNG");
     return Game(name, analysis, editor, desc, img, year);
 }
 
