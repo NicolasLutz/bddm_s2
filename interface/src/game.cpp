@@ -32,7 +32,7 @@ Game::~Game()
     if(m_year)
         delete m_year;
     if(m_description)
-        delete m_editor;
+        delete m_description;
 }
 
 void Game::operator=(const Game& other) {

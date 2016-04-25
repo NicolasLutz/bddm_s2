@@ -145,7 +145,7 @@ Game Database::game(const QString& name) {
     checkSqliteCall(sqlite3_step(m_gameHandle), SQLITE_ROW);
     int bytes = sqlite3_column_bytes(m_gameHandle, 4);
     const void* ptr = sqlite3_column_blob(m_gameHandle, 4);
-    QImage analysis = QImage::fromData(reinterpret_cast<const char*>(ptr, bytes), "PNG");
+    QImage analysis = QImage::fromData(reinterpret_cast<const unsigned char*>(ptr), bytes, "PNG");
     analysis.save("test_load.png");
     bool nullEditor = (sqlite3_column_type(m_gameHandle, 1) == SQLITE_NULL),
          nullYear   = (sqlite3_column_type(m_gameHandle, 0) == SQLITE_NULL),
@@ -177,18 +177,18 @@ void Database::update_game(const Game& g) {
         checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 2), SQLITE_OK);
 
     if(!g.gameImg().isNull())
-        checkSqliteCall(sqlite3_bind_blob(m_gameUpdateHandle, 3, g.gameImg().constBits(), g.gameImg().byteCount(), SQLITE_STATIC), SQLITE_OK);
+        checkSqliteCall(sqlite3_bind_blob(m_gameUpdateHandle, 3, g.gameImg().constBits(), g.gameImg().byteCount(), SQLITE_TRANSIENT), SQLITE_OK);
     else
         checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 3), SQLITE_OK);
 
-    checkSqliteCall(sqlite3_bind_blob(m_gameUpdateHandle, 4, g.analysis().constBits(), g.analysis().byteCount(), SQLITE_STATIC), SQLITE_OK);
+    checkSqliteCall(sqlite3_bind_blob(m_gameUpdateHandle, 4, g.analysis().constBits(), g.analysis().byteCount(), SQLITE_TRANSIENT), SQLITE_OK);
 
     if(g.description())
         checkSqliteCall(sqlite3_bind_text(m_gameUpdateHandle, 5, g.description()->toStdString().c_str(), g.description()->length(), SQLITE_STATIC), SQLITE_OK);
     else
         checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 5), SQLITE_OK);
 
-    checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 6, g.name().toStdString().c_str(), g.name().length(), SQLITE_STATIC), SQLITE_OK);
+    checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 6, g.name().toStdString().c_str(), g.name().length(), SQLITE_TRANSIENT), SQLITE_OK);
 
     // Parameters bound, run the statement
     checkSqliteCall(sqlite3_step(m_gameUpdateHandle), SQLITE_DONE);
@@ -220,7 +220,7 @@ void Database::create(const QString& filename) {
 }
 
 void Database::insert_game(const Game& g) {
-    checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 1, g.name().toStdString().c_str(), g.name().length(), SQLITE_STATIC), SQLITE_OK);
+    checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 1, g.name().toStdString().c_str(), g.name().length(), SQLITE_TRANSIENT), SQLITE_OK);
 
     if(g.year())
         checkSqliteCall(sqlite3_bind_int(m_insertStmtHandle, 2, *(g.year())), SQLITE_OK);
@@ -229,35 +229,34 @@ void Database::insert_game(const Game& g) {
 
     if(g.editor()) {
         int* id = editor_id(*g.editor());
-        if(id) {
-            checkSqliteCall(sqlite3_bind_int(m_insertStmtHandle, 3, *id), SQLITE_OK);
-            delete id;
+        if(!id) {
+            insert_editor(*g.editor());
+            id = editor_id(*g.editor());
         }
-        else
-            checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 3), SQLITE_OK);
+        checkSqliteCall(sqlite3_bind_int(m_insertStmtHandle, 3, *id), SQLITE_OK);
+        delete id;
     }
     else
         checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 3), SQLITE_OK);
 
     if(g.description())
-        checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 4, g.description()->toStdString().c_str(), g.description()->length(), SQLITE_STATIC), SQLITE_OK);
+        checkSqliteCall(sqlite3_bind_text(m_insertStmtHandle, 4, g.description()->toStdString().c_str(), g.description()->length(), SQLITE_TRANSIENT), SQLITE_OK);
     else
         checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 4), SQLITE_OK);
-
-    QByteArray ba;
-    QBuffer buf(&ba);
-    buf.open(QIODevice::WriteOnly);
-    g.analysis().save(&buf, "PNG");
-    buf.close();
-
-    checkSqliteCall(sqlite3_bind_blob(m_insertStmtHandle, 6, ba.data(), ba.size(), SQLITE_STATIC), SQLITE_OK);
+    {
+        QByteArray ba;
+        QBuffer buf(&ba);
+        buf.open(QIODevice::WriteOnly);
+        g.analysis().save(&buf, "PNG");
+        checkSqliteCall(sqlite3_bind_blob(m_insertStmtHandle, 6, ba.data(), ba.size(), SQLITE_TRANSIENT), SQLITE_OK);
+    }
 
     if(!g.gameImg().isNull()){
-        ba.clear();
+        QByteArray ba;
+        QBuffer buf(&ba);
         buf.open(QIODevice::WriteOnly);
         g.gameImg().save(&buf, "PNG");
-        buf.close();
-        checkSqliteCall(sqlite3_bind_blob(m_insertStmtHandle, 5, ba.data(), ba.size(), SQLITE_STATIC), SQLITE_OK);
+        checkSqliteCall(sqlite3_bind_blob(m_insertStmtHandle, 5, ba.data(), ba.size(), SQLITE_TRANSIENT), SQLITE_OK);
     }
     else
         checkSqliteCall(sqlite3_bind_null(m_insertStmtHandle, 5), SQLITE_OK);
@@ -284,7 +283,7 @@ QString Database::editor_name(const int id) {
 }
 
 void Database::insert_editor(const QString& editor) {
-    checkSqliteCall(sqlite3_bind_text(m_insertEditorHandle, 1, editor.toStdString().c_str(), editor.length(), SQLITE_STATIC), SQLITE_OK);
+    checkSqliteCall(sqlite3_bind_text(m_insertEditorHandle, 1, editor.toStdString().c_str(), editor.length(), SQLITE_TRANSIENT), SQLITE_OK);
     checkSqliteCall(sqlite3_step(m_insertEditorHandle), SQLITE_DONE);
     sqlite3_reset(m_insertEditorHandle);
 }
