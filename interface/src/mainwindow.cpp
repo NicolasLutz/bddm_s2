@@ -83,7 +83,8 @@ float MainWindow::hudMaskDistanceCalculation(const QImage *img1, const QImage *i
     int width, height;
 
     img1Ptr=(quint8 *) img1->bits();
-    img2Ptr=(quint8 *) img2->scaled(img1->size()).bits();
+    QImage img2Scaled=img2->scaled(img1->size());
+    img2Ptr=(quint8 *) img2Scaled.bits();
     width= img1->width();
     height=img1->height();
 
