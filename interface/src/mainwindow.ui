@@ -225,6 +225,7 @@
     </property>
     <addaction name="actionGod_mode"/>
     <addaction name="actionLoad_fake_comparasion"/>
+    <addaction name="actionTest_distance_with_two_images"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuDebug"/>
@@ -250,6 +251,11 @@
   <action name="actionLoad_fake_comparasion">
    <property name="text">
     <string>Load fake comparasion</string>
+   </property>
+  </action>
+  <action name="actionTest_distance_with_two_images">
+   <property name="text">
+    <string>Test distance with two images</string>
    </property>
   </action>
  </widget>

@@ -80,37 +80,21 @@ float MainWindow::hudMaskDistanceCalculation(const QImage *img1, const QImage *i
     int distance=0;
     quint8 *img1Ptr;
     quint8 *img2Ptr;
-    int wI1, hI1, wI2, hI2;
+    int width, height;
 
-    if(img1->width() < img2->width())
-    {
-        img1Ptr=(quint8 *) img2->bits();
-        img2Ptr=(quint8 *) img1->bits();
-        wI1= img2->width();
-        hI1=img2->height();
-        wI2= img1->width();
-        hI2= img1->height();
-    }
-    else
-    {
-        img1Ptr=(quint8 *) img1->bits();
-        img2Ptr=(quint8 *) img2->bits();
-        wI1= img1->width();
-        hI1=img1->height();
-        wI2= img2->width();
-        hI2= img2->height();
-    }
+    img1Ptr=(quint8 *) img1->bits();
+    img2Ptr=(quint8 *) img2->scaled(img1->size()).bits();
+    width= img1->width();
+    height=img1->height();
 
-    for (int x=0; x<wI1; ++x)
+    for (int x=0; x<width; ++x)
     {
-        int xImg2=toIntCoordinate(fromIntCoordinate(x, wI1), wI2);
-        for (int y=0; y<hI1; ++y)
+        for (int y=0; y<height; ++y)
         {
-            int yImg2=toIntCoordinate(fromIntCoordinate(y, hI1), hI2);
-            distance+=(img2Ptr[toPtrLocation(xImg2, yImg2, wI2)]-img1Ptr[toPtrLocation(x, y, wI1)]);
+            distance+=std::abs(img2Ptr[toPtrLocation(x, y, width)]-img1Ptr[toPtrLocation(x, y, width)]);
         }
     }
-    return (float)distance/(wI1*hI1);
+    return (float)distance/(width*height);
 }
 
 void MainWindow::on_pushButton_4_clicked() //Yes
@@ -231,4 +215,13 @@ void MainWindow::on_actionLoad_fake_comparasion_triggered()
 {
     m_ahd.debug_setImgfromFile("output.png");
     findGame();
+}
+
+void MainWindow::on_actionTest_distance_with_two_images_triggered()
+{
+    m_ahd.debug_setImgfromFile("output.png");
+    QImage *img=new QImage("lol.png");
+
+    qDebug() << hudMaskDistanceCalculation(m_ahd.getImg(), img);
+    delete img;
 }

@@ -47,11 +47,13 @@ private slots:
 
     void on_actionLoad_fake_comparasion_triggered();
 
+    void on_actionTest_distance_with_two_images_triggered();
+
 private:
 
     float hudMaskDistanceCalculation(const QImage *img1, const QImage *img2) const;
     float fromIntCoordinate(int value, int size) const {return value/size;}
-    int toIntCoordinate(float value, int size) const {return value*size;}
+    int toIntCoordinate(float value, int size) const {return int(value*size+0.5);}
     int toPtrLocation(int x, int y, int width) const {return y*width+x;}
 
     //erase result fields associated with the game
