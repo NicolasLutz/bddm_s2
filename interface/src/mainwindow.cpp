@@ -127,24 +127,23 @@ void MainWindow::on_pushButton_3_clicked() //Results
     {
         try {
             m_analyser.analyze_video(m_videoFilename);
-
-            m_analyser.produceOutputs();
-            if(m_ahd.getImg()!=NULL)
-            {
-                ui->label_2->setPixmap(QPixmap::fromImage(*(m_ahd.getImg())));
-                m_ahd.getImg()->save("output.png");
-            }
-
-            findGame();
-
-            ui->widget->show();
-            ui->horizontalWidget_answer->show();
         }
         catch(std::runtime_error& e) {
             std::ostringstream oss;
             oss << "Failed to analyze media file : " << e.what();
             QMessageBox::critical(this, "I'm afraid I can't do that, Dave.", QString::fromStdString(oss.str()));
         }
+        m_analyser.produceOutputs();
+        if(m_ahd.getImg()!=NULL)
+        {
+            ui->label_2->setPixmap(QPixmap::fromImage(*(m_ahd.getImg())));
+            m_ahd.getImg()->save("output.png");
+        }
+
+        findGame();
+
+        ui->widget->show();
+        ui->horizontalWidget_answer->show();
     }
 }
 

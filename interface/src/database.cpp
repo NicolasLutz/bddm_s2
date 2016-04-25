@@ -141,7 +141,7 @@ std::vector<QString> Database::games() {
 }
 
 Game Database::game(const QString& name) {
-    checkSqliteCall(sqlite3_bind_text(m_gameHandle, 1, name.toStdString().c_str(), name.length(), SQLITE_STATIC), SQLITE_OK);
+    checkSqliteCall(sqlite3_bind_text(m_gameHandle, 1, name.toStdString().c_str(), name.length(), SQLITE_TRANSIENT), SQLITE_OK);
     checkSqliteCall(sqlite3_step(m_gameHandle), SQLITE_ROW);
     int bytes = sqlite3_column_bytes(m_gameHandle, 4);
     const void* ptr = sqlite3_column_blob(m_gameHandle, 4);
@@ -155,6 +155,7 @@ Game Database::game(const QString& name) {
     QString* desc   = nullDesc   ? nullptr : new QString(reinterpret_cast<const char*>(sqlite3_column_text(m_gameHandle, 2)));
     int* year = nullYear ? nullptr : new int(sqlite3_column_int(m_gameHandle, 0));
     QImage img = nullImg ? QImage() : QImage::fromData(reinterpret_cast<const char*>(sqlite3_column_blob(m_gameHandle, 3), sqlite3_column_bytes(m_gameHandle, 3)), "PNG");
+    sqlite3_reset(m_gameHandle);
     return Game(name, analysis, editor, desc, img, year);
 }
 
@@ -184,7 +185,7 @@ void Database::update_game(const Game& g) {
     checkSqliteCall(sqlite3_bind_blob(m_gameUpdateHandle, 4, g.analysis().constBits(), g.analysis().byteCount(), SQLITE_TRANSIENT), SQLITE_OK);
 
     if(g.description())
-        checkSqliteCall(sqlite3_bind_text(m_gameUpdateHandle, 5, g.description()->toStdString().c_str(), g.description()->length(), SQLITE_STATIC), SQLITE_OK);
+        checkSqliteCall(sqlite3_bind_text(m_gameUpdateHandle, 5, g.description()->toStdString().c_str(), g.description()->length(), SQLITE_TRANSIENT), SQLITE_OK);
     else
         checkSqliteCall(sqlite3_bind_null(m_gameUpdateHandle, 5), SQLITE_OK);
 
@@ -267,7 +268,7 @@ void Database::insert_game(const Game& g) {
 }
 
 int* Database::editor_id(QString const& editor) {
-    checkSqliteCall(sqlite3_bind_text(m_editorIdHandle, 1, editor.toStdString().c_str(), editor.length(), SQLITE_STATIC), SQLITE_OK);
+    checkSqliteCall(sqlite3_bind_text(m_editorIdHandle, 1, editor.toStdString().c_str(), editor.length(), SQLITE_TRANSIENT), SQLITE_OK);
     int* r = (sqlite3_step(m_editorIdHandle) == SQLITE_ROW) ? new int(sqlite3_column_int(m_editorIdHandle, 0)) : nullptr;
     sqlite3_reset(m_editorIdHandle);
     return r;
