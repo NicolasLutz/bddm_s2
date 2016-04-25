@@ -90,7 +90,7 @@ float MainWindow::hudMaskDistanceCalculation(const QImage *img1, const QImage *i
     {
         for (int y=0; y<height; ++y)
         {
-            distance+=std::abs(img2Ptr[toPtrLocation(x, y, width)]-img1Ptr[toPtrLocation(x, y, width)]);
+            distance+=sqrt(powf(img2Ptr[toPtrLocation(x, y, width)]-img1Ptr[toPtrLocation(x, y, width)], 2));
         }
     }
     return (float)distance/(width*height);
