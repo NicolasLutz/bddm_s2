@@ -11,7 +11,7 @@ public:
     Analyser_Color_Detection();
     ~Analyser_Color_Detection();
 
-    void updateVideoDetection(void * p_video_data, uint8_t * p_pixel_buffer, int width, int height, int pixel_pitch, int size, int64_t pts);
+    void updateVideoDetection(uint8_t * p_pixel_buffer, int width, int height, int pixel_pitch);
     void produceOutput();
 
 private:

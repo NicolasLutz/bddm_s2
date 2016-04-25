@@ -125,6 +125,7 @@ Database::~Database() {
 }
 
 std::vector<QString> Database::games() {
+    sqlite3_reset(m_gameNamesHandle);
     std::vector<QString> v;
     int sqliteCode = sqlite3_step(m_gameNamesHandle);
     while(sqliteCode != SQLITE_DONE) {

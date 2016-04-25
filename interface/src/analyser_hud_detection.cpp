@@ -16,7 +16,7 @@ Analyser_HUD_Detection::~Analyser_HUD_Detection()
     delete m_previousFrame;
 }
 
-void Analyser_HUD_Detection::updateVideoDetection(void * p_video_data, uint8_t * p_pixel_buffer, int width, int height, int pixel_pitch, int size, int64_t pts)
+void Analyser_HUD_Detection::updateVideoDetection(uint8_t * p_pixel_buffer, int width, int height, int pixel_pitch)
 {
     //static const double maxN2=sqrt(255*255*3);
     quint64 pixelCount = width * height;

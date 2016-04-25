@@ -2,7 +2,6 @@
 #define ANALYSER_HUD_DETECTION_H
 
 #include "Common.h"
-#include "VLCHandler.h"
 #include "FrameValue.h"
 #include <QImage>
 #include <QLabel>
@@ -14,7 +13,7 @@ public:
     Analyser_HUD_Detection();
     ~Analyser_HUD_Detection();
 
-    void updateVideoDetection(void * p_video_data, uint8_t * p_pixel_buffer, int width, int height, int pixel_pitch, int size, int64_t pts);
+    void updateVideoDetection(uint8_t * p_pixel_buffer, int width, int height, int pixel_pitch);
     void produceOutput();
 
     QImage *getImg() const;
